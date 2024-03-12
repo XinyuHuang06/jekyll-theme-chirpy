@@ -14,12 +14,12 @@ timezone: Asia/Shanghai
 # jekyll-seo-tag settings › https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
 # ↓ --------------------------
 
-title: XinyuHuang # the main title
+title: Fish # the main title
 
-tagline: 雷达、人工智能、个人学习与生活。 # it will display as the sub-title
+tagline: Radar, Math, Optimization and life # it will display as the sub-title
 
 description: >- # used by seo meta and the atom feed
-  雷达、人工智能、个人学习与生活。
+  Test
 
 # Fill in the protocol & hostname for your site.
 # e.g. 'https://username.github.io', note that it does not end with a '/'.
@@ -78,7 +78,7 @@ pageviews:
 #     light  - Use the light color scheme
 #     dark   - Use the dark color scheme
 #
-theme_mode: dark # [light | dark]
+theme_mode: light # [light | dark]
 
 # The CDN endpoint for images.
 # Notice that once it is assigned, the CDN url

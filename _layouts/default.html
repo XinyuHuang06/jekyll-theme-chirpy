@@ -1,7 +1,6 @@
 ---
 layout: compress
 ---
-
 <!doctype html>
 
 {% include origin-type.html %}
@@ -75,7 +74,6 @@ layout: compress
     {% endif %}
 
     <!-- JavaScripts -->
-
     {% include js-selector.html lang=lang %}
 
     {% if page.mermaid %}
@@ -83,5 +81,20 @@ layout: compress
     {% endif %}
 
     {% include_cached search-loader.html lang=lang %}
+    {% if enable_toc %}
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          tocbot.init({
+            tocSelector: '#toc',
+            contentSelector: '.content',
+            ignoreSelector: '[data-toc-skip]',
+            headingSelector: 'h2, h3, h4',
+            orderedList: false,
+            scrollSmooth: false
+          });
+          tocbot.refresh();
+        });
+      </script>
+    {% endif %}
   </body>
 </html>
