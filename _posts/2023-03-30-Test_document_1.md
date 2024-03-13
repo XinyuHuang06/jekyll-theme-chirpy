@@ -1,5 +1,5 @@
 ---
-title: 读书笔记-《长日将尽》 By 石黑一雄
+title: Test_document_1
 author: xinyu
 date: 2023-03-30 12:00:00 +0800
 pin: true
@@ -8,6 +8,8 @@ tags: [读书笔记]
 image:
   path: /assets/img/picture/wallpaper_1.jpg
 ---
+
+读书笔记-《长日将尽》 By 石黑一雄
 
 我从中感到一种忧伤、一种怜悯、一种无可奈何。我们或者说我自己亦是如此。
 

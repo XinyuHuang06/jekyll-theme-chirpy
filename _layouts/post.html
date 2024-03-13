@@ -22,6 +22,8 @@ tail_includes:
       </span>
 
       <!-- lastmod date -->
+      <div>Test: {{ page.last_modified_at }}</div>
+      <div>Test2: {{ page.date }}</div>
       {% if page.last_modified_at and page.last_modified_at != page.date %}
         <span>
           {{ site.data.locales[lang].post.updated }}

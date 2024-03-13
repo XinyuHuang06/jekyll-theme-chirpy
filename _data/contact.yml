@@ -10,6 +10,9 @@
   icon: "fas fa-envelope"
   noblank: true # open link in current tab
 
+- type: bilibili
+  icon: "fa-brands fa-bilibili"
+  url: "http://test"
 # - type: rss
 #   icon: "fas fa-rss"
 #   noblank: true
