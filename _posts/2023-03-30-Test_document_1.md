@@ -8,7 +8,7 @@ tags: [读书笔记]
 image:
   path: /assets/img/picture/wallpaper_1.jpg
 ---
-
+111
 读书笔记-《长日将尽》 By 石黑一雄
 
 我从中感到一种忧伤、一种怜悯、一种无可奈何。我们或者说我自己亦是如此。
