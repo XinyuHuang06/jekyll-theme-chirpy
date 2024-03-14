@@ -3,7 +3,6 @@
 # Check for changed posts
 
 Jekyll::Hooks.register :posts, :post_init do |post|
-  git log --oneline "#{ post.path }" | wc -l
 
   commit_num = `git rev-list --count HEAD "#{ post.path }"`
 
