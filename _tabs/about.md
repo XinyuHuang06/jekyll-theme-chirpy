@@ -20,8 +20,6 @@ learning_huang
 
 ## 联系方式
 
-GitHub:
+GitHub: https://github.com/huang-cumt
 
 Email: learning_huang@163.com
-
-Google Scholar: 
