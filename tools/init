@@ -53,14 +53,14 @@ _check_init() {
   local _has_inited=false
 
   if [[ ! -d .github ]]; then # using option `--no-gh`
-    _has_inited=true
+    _has_inited= false
   else
     if [[ -f .github/workflows/$ACTIONS_WORKFLOW ]]; then
       # on BSD, the `wc` could contains blank
       local _count
       _count=$(find .github/workflows/ -type f -name "*.yml" | wc -l)
       if [[ ${_count//[[:blank:]]/} == 1 ]]; then
-        _has_inited=true
+        _has_inited=false
       fi
     fi
   fi

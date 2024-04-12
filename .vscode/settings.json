@@ -7,6 +7,15 @@
   "files.associations": {
     "*.html": "liquid"
   },
+  "[markdown]": {
+    "editor.formatOnSave": false,
+    "editor.renderWhitespace": "all",
+    "editor.quickSuggestions": {
+      "other": "on",
+      "comments": "on",
+      "strings": "on"
+    }
+  },
   // Formatter
   "[html][liquid]": {
     "editor.defaultFormatter": "Shopify.theme-check-vscode"
