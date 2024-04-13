@@ -23,7 +23,7 @@ function build(filename) {
       babel({
         babelHelpers: 'bundled',
         presets: ['@babel/env'],
-        plugins: ['@babel/plugin-transform-class-properties']
+        plugins: ['@babel/plugin-proposal-class-properties']
       }),
       license({
         banner: {

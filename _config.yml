@@ -21,6 +21,7 @@ tagline: Radar, Math, Optimization and life # it will display as the sub-title
 description: >- # used by seo meta and the atom feed
   Test
 
+
 # Fill in the protocol & hostname for your site.
 # e.g. 'https://username.github.io', note that it does not end with a '/'.
 url: "https://huang-cumt.github.io"
@@ -30,7 +31,6 @@ github:
 
 # twitter:
 #   username: twitter_username # change to your twitter username
-
 social:
   # Change to your full name.
   # It will be displayed as the default author of the posts and the copyright owner in the Footer
@@ -44,28 +44,16 @@ social:
     # - https://www.facebook.com/username
     # - https://www.linkedin.com/in/username
 
-# Site Verification Settings
-webmaster_verifications:
-  google: # fill in your Google verification code
-  bing: # fill in your Bing verification code
-  alexa: # fill in your Alexa verification code
-  yandex: # fill in your Yandex verification code
-  baidu: # fill in your Baidu verification code
-  facebook: # fill in your Facebook verification code
+google_site_verification: # fill in to your verification string
 
 # ↑ --------------------------
 # The end of `jekyll-seo-tag` settings
 
-# Web Analytics Settings
-analytics:
-  google:
-    id: # fill in your Google Analytics ID
-  goatcounter:
-    id: # fill in your GoatCounter ID
+google_analytics:
+  id: # fill in your Google Analytics ID
 
-# Pageviews settings
-pageviews:
-  provider: # now only supports 'goatcounter'
+goatcounter:
+  id: # fill in your Goatcounter ID
 
 # Prefer color scheme setting.
 #
@@ -78,14 +66,14 @@ pageviews:
 #     light  - Use the light color scheme
 #     dark   - Use the dark color scheme
 #
-theme_mode: light # [light | dark]
+theme_mode: # [light | dark]
 
 # The CDN endpoint for images.
 # Notice that once it is assigned, the CDN url
 # will be added to all image (site avatar & posts' images) paths starting with '/'
 #
 # e.g. 'https://cdn.com'
-# img_cdn: "https://chirpy-img.netlify.app"
+img_cdn:
 
 # the avatar on sidebar, support local or CORS resources
 avatar: "/assets/img/picture/avatar.jpg"
@@ -98,9 +86,8 @@ social_preview_image: # string, local or CORS resources
 toc: true
 
 comments:
-  # Global switch for the post comment system. Keeping it empty means disabled.
-  provider: # [disqus | utterances | giscus]
-  # The provider options are as follows:
+  active: # The global switch for posts comments, e.g., 'disqus'.  Keep it empty means disable
+  # The active options are as follows:
   disqus:
     shortname: # fill with the Disqus shortname. › https://help.disqus.com/en/articles/1717111-what-s-a-shortname
   # utterances settings › https://utteranc.es/
@@ -215,9 +202,3 @@ jekyll-archives:
   permalinks:
     tag: /tags/:name/
     category: /categories/:name/
-# plugins:
-#   - posts-lastmod-hook
-
-# # Optional. The default date format, used if none is specified in the tag.
-# last-modified-at:
-#   date-format: "%d-%b-%y"
