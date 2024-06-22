@@ -69,7 +69,7 @@
     {% endfor %}
 
     <link rel="stylesheet" href="{{ site.data.origin[type].webfonts | relative_url }}">
-  {% endif %}
+  {% endunless %}
 
   <!-- GA -->
   {% if jekyll.environment == 'production' and site.google_analytics.id != empty and site.google_analytics.id %}
