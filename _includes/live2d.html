@@ -1,23 +1,27 @@
 <head>
   <style>
-    .live2dmodule {
-      position: absolute;
-      right: 20px;
-      bottom: 20px;
-      background-color: #f0f0f0;
-      padding: 10px;
+    #waifu {
+      position: fixed;
+      top: 0;
+      right: 0;
     }
   </style>
 </head>
-
-<div class="live2dmodule" onload="Simple()">
-  <canvas id="glcanvas" width="512px" height="512px" style="border:dashed 1px #CCC"></canvas>
-
-  <div id="myconsole" style="color:#BBB">---- Log ----</div>
-
-  <!-- Live2D Library -->
-  <script src="../../assets/javascripts/live2d.min.js"></script>
-
-  <!-- User's Script -->
-  <script src="../../assets/javascripts/Simple.js"></script>
+<div id="waifu">
+  <div id="waifu-message"></div>
+  <div class="waifu-tool">
+    <span class="icon-next"></span>
+    <span class="icon-home"></span>
+    <span class="icon-message"></span>
+    <span class="icon-camera"></span>
+    <span class="icon-volumeup"></span>
+    <span class="icon-volumedown"></span>
+    <span class="icon-about"></span>
+    <span class="icon-cross"></span>
+  </div>
+  <canvas id="live2d2"></canvas>
+  <canvas id="live2d4"></canvas>
 </div>
+<!-- src 中改为你存放的路径 -->
+<script src="assets/live2djs/dist/live2d_bundle.js"></script>
+<script async type="module" src="../assets/live2djs/waifu-tips.js"></script>
