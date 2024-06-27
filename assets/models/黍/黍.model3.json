@@ -3,9 +3,7 @@
   "Type": 0,
   "FileReferences": {
     "Moc": "黍.moc3",
-    "Textures": [
-      "黍.4096/texture_00.png"
-    ],
+    "Textures": ["黍.4096/texture_00.png"],
     "Physics": "黍.physics3.json",
     "PhysicsV2": {
       "File": "黍.physics3.json"
@@ -14,51 +12,51 @@
       "Tap#4": [
         {
           "Name": "种到土里",
-          "File": "种到土里（点手）.motion3.json",
-          "Sound": "作战中4.wav",
+          "File": "./motions/mtn_00.motion3.json",
+          "Sound": "./audio/作战中4.wav",
           "Priority": 4
         },
         {
           "Name": "种到地里",
-          "File": "种到地里.motion3.json",
-          "Sound": "戳一下.wav",
+          "File": "./motions/mtn_01.motion3.json",
+          "Sound": "./audio/戳一下.wav",
           "Priority": 4
         },
         {
           "Name": "谷种入田野",
-          "File": "谷种入田野.motion3.json",
-          "Sound": "完成高难行动.wav",
+          "File": "./motions/mtn_02.motion3.json",
+          "Sound": "./audio/完成高难行动.wav",
           "Priority": 4
         },
         {
           "Name": "钓鱼",
-          "File": "钓鱼.motion3.json",
-          "Sound": "信赖触摸.wav",
+          "File": "./motions/mtn_03.motion3.json",
+          "Sound": "./audio/信赖触摸.wav",
           "Priority": 4
         },
         {
           "Name": "掐腰",
-          "File": "待机.motion3.json",
+          "File": "./motions/mtn_04.motion3.json",
           "Priority": 4
         },
         {
           "Name": "有大麟",
-          "File": "有大麟！.motion3.json",
+          "File": "./motions/mtn_05.motion3.json",
           "Priority": 4
         },
         {
           "Name": "生气",
-          "File": "生气.motion3.json",
+          "File": "./motions/mtn_06.motion3.json",
           "Priority": 4
         },
         {
           "Name": "晃手",
-          "File": "晃手.motion3.json",
+          "File": "./motions/mtn_07.motion3.json",
           "Priority": 4
         },
         {
           "Name": "闭眼",
-          "File": "闭一只眼.motion3.json",
+          "File": "./motions/mtn_08.motion3.json",
           "Priority": 4
         }
       ]
@@ -66,19 +64,19 @@
     "Expressions": [
       {
         "Name": "闭眼",
-        "File": "普通闭眼.exp3.json"
+        "File": "./expression/普通闭眼.exp3.json"
       },
       {
         "Name": "皱眉",
-        "File": "皱眉.exp3.json"
+        "File": "./expression/皱眉.exp3.json"
       },
       {
         "Name": "闭一只眼",
-        "File": "闭一只眼.exp3.json"
+        "File": "./expression/闭一只眼.exp3.json"
       },
       {
         "Name": "震惊",
-        "File": "震惊.exp3.json"
+        "File": "./expression/震惊.exp3.json"
       }
     ]
   },
