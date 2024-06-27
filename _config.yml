@@ -1,5 +1,5 @@
 # The Site Configuration
-host: 0.0.0.0
+
 # Import the theme
 theme: jekyll-theme-chirpy
 
