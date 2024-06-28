@@ -9,9 +9,10 @@ tail_includes:
   - comments
 ---
 {% include lang.html %}
-{% include live2d.html %}
+
 <article class="px-1">
   <header>
+    {% include live2d.html %}
     <h1 data-toc-skip>{{ page.title }}</h1>
     {% if page.description %}
       <p class="post-desc fw-light mb-4">{{ page.description }}</p>
