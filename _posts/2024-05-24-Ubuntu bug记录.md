@@ -108,4 +108,10 @@ fan10:             0 RPM  (min =    0 RPM)
 
 返回如下，说明当前使用的是1、4、5号三个接口，fan的编号通常与pwm编号相同，具体的fan对应于主板上的接口可能需要手动调节观察以确定。
 
-下一步需要确定pwm配置文件的路径。使用`ls /sys/class/hwmon/hwmon*/`可以查看系统硬件情况，可以看到含有pwm的文件，该文件即为对应风扇的配置文件。我这里在`/sys/class/hwmon/hwmon7/`路径下看到了一系列pwm配置文件。
+下一步需要确定pwm配置文件的路径。使用`ls /sys/class/hwmon/hwmon*/`可以查看系统硬件情况，可以看到含有pwm的文件，该文件即为对应风扇的配置文件。我这里在`/sys/class/hwmon/hwmon6/pwm*`路径下看到了一系列pwm配置文件。尝试对其进行更改，但是返回信息提示
+
+```shell
+/usr/sbin/pwmconfig: line 180: hwmon6/pwm2: Permission denied
+```
+
+即便使用`sudo`权限执行该指令仍然会出现这一个问题。
