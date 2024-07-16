@@ -24,13 +24,14 @@ tags: [Ubuntu]
 3. 在不断重启中发现，有时会直接不显示网卡。
 
 对于3.中问题，解决方案如下:
+
 ```shell
 # 查看启用的网卡
 ifconfig
 # 查看所有网卡
 ifconfig -a
-
 ```
+
 可以看到设备存在但是没有被挂载。使用`sudo vim /etc/NetworkManager/NetworkManager.conf`查看文件内容，并修改`managed=true`,修改完毕后重启，网卡可以正常显示。
 
 ```shell
@@ -61,10 +62,12 @@ wifi.scan-rand-mac-address=no
 主板：MSI MOTORA B760M WIFI DDR5 II
 
 因使用分体式水冷，水冷风扇、水泵是与显卡独立的，因此尝试改变其风扇控制策略。网上常见的风扇控制策略为使用`lm-control`检测传感器并使用`fancontrol`软件进行控制；这两个库ubuntu均没有预装，使用如下指令安装。
+
 ```shell
 sudo apt-get install lm-sensors # Install lm-sensors
 sudo apt-get install fancontrol # Install fancontrol
 ```
+
 安装完后使用`sudo sensors-detect`进行传感器匹配配置，在我所使用的主板上，主板控制芯片并没有安装，在匹配过程中看到如下提示：
 
 ```shell
