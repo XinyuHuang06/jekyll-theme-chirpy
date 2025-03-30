@@ -118,3 +118,11 @@ fan10:             0 RPM  (min =    0 RPM)
 ```
 
 即便使用`sudo`权限执行该指令仍然会出现这一个问题。
+
+```shell
+
+```
+
+
+
+## Ubuntu desktop file create

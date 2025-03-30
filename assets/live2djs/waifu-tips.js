@@ -28,6 +28,9 @@ const live2d_settings = {
   preLoadMotion: true, // 是否预载动作数据，只对 model3 模型有效，不预载可以提高 model3 模型的加载速度，但可能导致首次触发动作时卡顿
   tryWebp: true, // 如果浏览器支持 WebP 格式，将优先加载 WebP 格式的贴图，例如默认贴图文件为 klee.8192/texture_00.png，
   // 启用后将优先加载 klee.8192/texture_00.png.webp，文件不存在会自动 fallback
+  // 动作设置
+  randomMotion: true, // 是否启用随机动作
+  randomMotionInterval: 30000, // 随机动作的间隔时间(毫秒)
   // 工具栏设置
   showToolMenu: false, // 显示 工具栏
   canCloseLive2d: false, // 显示 关闭看板娘 按钮
@@ -228,6 +231,65 @@ function changePosition(position) {
   }
 }
 
+// 随机动作相关变量
+let randomMotionTimer = null;
+let currentModel = null;
+
+// 获取模型的所有动作
+function getModelMotions(model) {
+  if (!model) return [];
+  try {
+    if (window.live2dCurrentVersion === 3) {
+      return window.live2dv4.getModelMotions(model);
+    } else {
+      return window.live2dv2.getModelMotions(model);
+    }
+  } catch (e) {
+    console.error("[WaifuTips] 获取模型动作失败:", e);
+    return [];
+  }
+}
+
+// 随机执行动作
+function playRandomMotion() {
+  if (!currentModel) return;
+  
+  const motions = getModelMotions(currentModel);
+  if (motions.length === 0) return;
+  
+  const randomMotion = motions[Math.floor(Math.random() * motions.length)];
+  try {
+    if (window.live2dCurrentVersion === 3) {
+      window.live2dv4.playMotion(currentModel, randomMotion);
+    } else {
+      window.live2dv2.playMotion(currentModel, randomMotion);
+    }
+  } catch (e) {
+    console.error("[WaifuTips] 执行动作失败:", e);
+  }
+}
+
+// 启动随机动作
+function startRandomMotion() {
+  if (!live2d_settings.randomMotion) return;
+  
+  if (randomMotionTimer) {
+    clearInterval(randomMotionTimer);
+  }
+  
+  randomMotionTimer = setInterval(() => {
+    playRandomMotion();
+  }, live2d_settings.randomMotionInterval);
+}
+
+// 停止随机动作
+function stopRandomMotion() {
+  if (randomMotionTimer) {
+    clearInterval(randomMotionTimer);
+    randomMotionTimer = null;
+  }
+}
+
 function initModel() {
   /* Load style sheet */
   addStyle(waifuStyle);
@@ -389,6 +451,10 @@ function loadModel(modelName) {
     );
   }
   window.live2dCurrentVersion = modelVersion;
+  currentModel = modelName;
+  
+  // 启动随机动作
+  startRandomMotion();
 }
 
 // 读取记忆的模型
