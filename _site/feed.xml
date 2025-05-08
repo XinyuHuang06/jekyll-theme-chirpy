@@ -1,0 +1,218 @@
+
+
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>http://0.0.0.0:4000/</id>
+  <title>Fish</title>
+  <subtitle>Test</subtitle>
+  <updated>2025-04-09T13:34:35+08:00</updated>
+  <author>
+    <name>XinyuHuang</name>
+    <uri>http://0.0.0.0:4000/</uri>
+  </author>
+  <link rel="self" type="application/atom+xml" href="http://0.0.0.0:4000/feed.xml"/>
+  <link rel="alternate" type="text/html" hreflang="en"
+    href="http://0.0.0.0:4000/"/>
+  <generator uri="https://jekyllrb.com/" version="4.3.4">Jekyll</generator>
+  <rights> © 2025 XinyuHuang </rights>
+  <icon>/assets/img/favicons/favicon.ico</icon>
+  <logo>/assets/img/favicons/favicon-96x96.png</logo>
+
+
+  
+  <entry>
+    <title>论文阅读记录</title>
+    <link href="http://0.0.0.0:4000/posts/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95/" rel="alternate" type="text/html" title="论文阅读记录" />
+    <published>2025-02-28T00:00:00+08:00</published>
+  
+    <updated>2025-02-28T00:00:00+08:00</updated>
+  
+    <id>http://0.0.0.0:4000/posts/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95/</id>
+    <content src="http://0.0.0.0:4000/posts/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95/" />
+    <author>
+      <name>XinyuHuang</name>
+    </author>
+
+  
+    
+  
+
+  <summary>信号模型
+
+[S_m(t,t_m)=\text{rect}(\frac{t}{T_p})\cdot \exp({j\pi\gamma t^2})\cdot \exp[j2\pi f_m(t+t_m)]]
+
+其中$T_p$为脉冲宽度，$f_m=f_0+a(m)\Delta f$,$f_0$为初始载频，$\Delta f$为最小频率捷变间隔，$a(m)\in{1,2,\cdots,N}$，$N$为总捷变码字数量，$t_m=(m-1)T_r+b(m)\Delta T$，且有$b(m)\in{1,2,\cdots,M}$。
+
+上式中以线性调频信号为例，假设对于任意信号$s(t)$，有
+
+[S_m(t,t_m)=\text{rect}(\frac{t}{T_p})\cdot s(t)\cdot \exp[j2\pi f_m(t+t_m)]]
+
+在经过脉冲压缩之后，信号具体样式并不影响最终的结果。</summary>
+
+  </entry>
+
+  
+  <entry>
+    <title>Hpc学习</title>
+    <link href="http://0.0.0.0:4000/posts/HPC%E5%AD%A6%E4%B9%A0/" rel="alternate" type="text/html" title="Hpc学习" />
+    <published>2024-06-14T16:31:04+08:00</published>
+  
+    <updated>2024-06-28T21:00:02+08:00</updated>
+  
+    <id>http://0.0.0.0:4000/posts/HPC%E5%AD%A6%E4%B9%A0/</id>
+    <content src="http://0.0.0.0:4000/posts/HPC%E5%AD%A6%E4%B9%A0/" />
+    <author>
+      <name>xinyu</name>
+    </author>
+
+  
+    
+    <category term="Learning" />
+    
+  
+
+  <summary>0. HPC(High Performance Computing)高性能计算学习记录
+
+参考链接
+
+1. 尝试使用std::thread优化向量加法与向量点乘运算
+
+
+  
+    C/C++ 语言。
+  
+  
+    [] 多线程与锁（std::thread, pthread）
+  
+
+
+在c++中，我们可以使用std::thread类来创建线程并进行运算，我们不能或许各个子线程的返回值，因此我们可以通过传递参数地址的形式来获取我们所感兴趣的子线程的变量值。
+在线程中，所谓锁的概念事实上是由于子进程可能同时进行导致的内存读写问题所引入的机制。对于一块内存多个进行无法同时对其进行读写操作，因此如何避免可能会出现的多个线程同时访问同一块内存区域所带来的错误，因此引入了锁机制。
+
+
+  [] SIMD 指令的使用
+  [] OpenMP 的使用
+由于有部分C++基础，选择使用str:...</summary>
+
+  </entry>
+
+  
+  <entry>
+    <title>Ubuntu BUG记录</title>
+    <link href="http://0.0.0.0:4000/posts/Ubuntu-bug%E8%AE%B0%E5%BD%95/" rel="alternate" type="text/html" title="Ubuntu BUG记录" />
+    <published>2024-05-24T14:31:18+08:00</published>
+  
+    <updated>2025-03-30T10:24:11+08:00</updated>
+  
+    <id>http://0.0.0.0:4000/posts/Ubuntu-bug%E8%AE%B0%E5%BD%95/</id>
+    <content src="http://0.0.0.0:4000/posts/Ubuntu-bug%E8%AE%B0%E5%BD%95/" />
+    <author>
+      <name>xinyu</name>
+    </author>
+
+  
+    
+    <category term="Other" />
+    
+  
+
+  <summary>0. 网卡Debug
+
+系统: Ubuntu 20.04
+内核版本： 6.5.0-35-generic
+主板：MSI MOTORA B760M WIFI DDR5 II
+
+近期在主机上新增了一块nvme固态硬盘，新装上之后有线网卡不能正常使用，wifi可以正常使用。但是一旦移除新增的硬盘，网络又可以正常使用了。下附个人解决思路与方案。
+
+先说结论：该问题疑似由ubuntu的udev规则机制引起，即在增加了新的固态硬盘之后，系统会重新分配网卡的名称，导致在网络配置文件中的网卡名称与实际网卡名称并不匹配，因此不能正确加载网卡配置。
+
+解决思路：
+
+
+  主机安装了双系统，切换到Windows后发现有线网络是可以正常使用的，排除硬件层面问题。
+  重新安装网卡驱动，问题仍然存在，排除驱动问题。
+  在不断重启中发现，有时会直接不显示网卡。
+
+
+对于3.中问题，解决方案如下:
+
+# 查看启用...</summary>
+
+  </entry>
+
+  
+  <entry>
+    <title>公式推导2</title>
+    <link href="http://0.0.0.0:4000/posts/%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC2/" rel="alternate" type="text/html" title="公式推导2" />
+    <published>2024-05-20T22:01:08+08:00</published>
+  
+    <updated>2025-03-30T10:24:11+08:00</updated>
+  
+    <id>http://0.0.0.0:4000/posts/%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC2/</id>
+    <content src="http://0.0.0.0:4000/posts/%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC2/" />
+    <author>
+      <name>xinyu</name>
+    </author>
+
+  
+    
+  
+
+  <summary>1. 约束与目标函数定义，问题初步建模
+
+[\begin{align}
+f(\boldsymbol{x}) &amp;amp;amp;=
+\sum_{\alpha}\sum_{f}{\omega_{\alpha}}
+\Re
+\left{
+{\left( \boldsymbol{F}N\boldsymbol{x} \right)}^H \varGamma{\alpha,f} {\left( \boldsymbol{F}_N\boldsymbol{x} \right)}
+\right}
+&amp;amp;amp;=
+\Re
+\left{
+{\boldsymbol{x}}^H  \boldsymbol{S}  {\boldsymbol{x}}
+\right}
+\end{align}]
+
+其中有$\varGamma=\sum_{\alpha}\sum_{f}{\omega_{\alpha}} \varGamma_{\alp...</summary>
+
+  </entry>
+
+  
+  <entry>
+    <title>公式推导</title>
+    <link href="http://0.0.0.0:4000/posts/%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/" rel="alternate" type="text/html" title="公式推导" />
+    <published>2024-05-20T22:01:08+08:00</published>
+  
+    <updated>2024-05-31T10:09:51+08:00</updated>
+  
+    <id>http://0.0.0.0:4000/posts/%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/</id>
+    <content src="http://0.0.0.0:4000/posts/%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/" />
+    <author>
+      <name>xinyu</name>
+    </author>
+
+  
+    
+  
+
+  <summary>[\begin{align}
+f(\boldsymbol{x}) &amp;amp;amp;= 
+\sum_{\alpha}\sum_{f}{\omega_{\alpha}} 
+\Re
+\left{
+{\left( \boldsymbol{F}N\boldsymbol{x} \right)}^H \varGamma{\alpha,f} {\left( \boldsymbol{F}_N\boldsymbol{x} \right)}
+\right}
+&amp;amp;amp;=
+\Re
+\left{
+{\boldsymbol{x}}^H  \boldsymbol{S}  {\boldsymbol{x}}
+\right}
+\end{align}]
+
+其中有$\varGamma = \sum_{\alpha}\sum_{f}{\omega_{\alpha}} \varGamma_{\alpha,f}$,$\boldsymb...</summary>
+
+  </entry>
+
+</feed>
+
+

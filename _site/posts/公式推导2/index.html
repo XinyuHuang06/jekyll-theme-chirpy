@@ -1,0 +1,1980 @@
+<!doctype html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- `site.alt_lang` can specify a language different from the UI -->
+<html lang="en" >
+  <div id="waifu">
+  <div id="waifu-message"></div>
+  <div class="waifu-tool">
+    <span class="icon-next"></span>
+    <span class="icon-home"></span>
+    <span class="icon-message"></span>
+    <span class="icon-camera"></span>
+    <span class="icon-volumeup"></span>
+    <span class="icon-volumedown"></span>
+    <span class="icon-about"></span>
+    <span class="icon-cross"></span>
+  </div>
+  <canvas id="live2d2"></canvas>
+  <canvas id="live2d4"></canvas>
+</div>
+<!-- src 中改为你存放的路径 -->
+<script src="/assets/live2djs/dist/live2d_bundle.js"></script>
+<script async type="module" src="/assets/live2djs/waifu-tips.js"></script>
+
+  <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f7f7f7">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1b1b1e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta
+    name="viewport"
+    content="width=device-width, user-scalable=no initial-scale=1, shrink-to-fit=no, viewport-fit=cover"
+  ><!-- Setup Open Graph image -->
+
+  
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<meta name="generator" content="Jekyll v4.3.4" />
+<meta property="og:title" content="公式推导2" />
+<meta name="author" content="Xinyu Huang" />
+<meta property="og:locale" content="en" />
+<meta name="description" content="1. 约束与目标函数定义，问题初步建模 [\begin{align} f(\boldsymbol{x}) &amp;= \sum_{\alpha}\sum_{f}{\omega_{\alpha}} \Re \left{ {\left( \boldsymbol{F}N\boldsymbol{x} \right)}^H \varGamma{\alpha,f} {\left( \boldsymbol{F}_N\boldsymbol{x} \right)} \right} &amp;= \Re \left{ {\boldsymbol{x}}^H \boldsymbol{S} {\boldsymbol{x}} \right} \end{align}] 其中有$\varGamma=\sum_{\alpha}\sum_{f}{\omega_{\alpha}} \varGamma_{\alpha,f}$ ，$\boldsymbol{S}=\boldsymbol{F}_N^H \varGamma\boldsymbol{F}_N$ 。由于循环谱的对称性，可以注意到实际上为一个实对称矩阵，即有$\varGamma^H=\varGamma$，因此我们有 S 为一个 Hermite 矩阵（这里并不会受到$\boldsymbol{F}_N$特性的影响，事实上傅里叶变换矩阵是一个与酉矩阵有类似的性质，即有$\boldsymbol{F}_N^H\boldsymbol{F}_N=N\boldsymbol{I}$），因此目标函数事实上构成一个复二次型。因此目标函数恒为实数。 $$ $$ 即有： [f(x)={\boldsymbol{x}}^H \boldsymbol{S} {\boldsymbol{x}}] 检测概率建模 雷达目标检测的假设检验模型可以表征为： \[\left\{ \begin{array}{ll} \boldsymbol{H}_0: &amp; \boldsymbol{v} = \boldsymbol{n}\\ \boldsymbol{H}_1: &amp; \boldsymbol{v} = \alpha_T\boldsymbol{x} + \boldsymbol{n} \end{array} \right.\] 其中$\boldsymbol{v}$为接收到的回波，假设当前环境下噪声为高斯分布，且已知其协方差矩阵为正定矩阵$\boldsymbol{M}$，因此依据纽曼-皮尔逊准则可以得到检测器为： \[{\left| \boldsymbol{v}^H\boldsymbol{M}^{-1}\boldsymbol{c} \right|}^2 \stackrel{H_1}{\underset{H_0}{\gtrless}} G\] 其中$G$为在给定虚警概率$P_{fa}$下的检测阈值，且有检测概率为： \[P_d = Q \left( \sqrt{2 {\left|\alpha_T\right|}^2\boldsymbol{c}^H\boldsymbol{M}^{-1}\boldsymbol{c} } ,\sqrt{-2 \ln{P_{fa}}} \right)\] 因此对于给定的协方差矩阵，检测概率仅仅依赖于信干噪比，即有： \[\text{SINR}={\left|\alpha_T\right|}^2\boldsymbol{c}^H\boldsymbol{M}^{-1}\boldsymbol{c}\] 最大化检测概率即最大化$\text{SINR}$值。 相似度约束建模 一些常用的雷达波形拥有较为良好的性质，假设给定的参考波形为$\boldsymbol{x}_0$，因此我们可以设置波形相似度约束有： \[{\left\| \boldsymbol{x}-\boldsymbol{x}_0 \right\|}^2 \leq \varepsilon\] 其中$\varepsilon$为指定的波形相似度参数，用于控制波形可设计的范围大小。 注意到事实上我们有： \[{\left\|\boldsymbol{x}-\boldsymbol{x}_0 \right\|}^2 = {\left(\boldsymbol{x}-\boldsymbol{x}_0 \right)}^H {\left( \boldsymbol{x}-\boldsymbol{x}_0 \right)} = \boldsymbol{x}^H\boldsymbol{x}+\boldsymbol{x}_0^H\boldsymbol{x}_0-\boldsymbol{x}^H\boldsymbol{x}_0-\boldsymbol{x}_0^H\boldsymbol{x}\] 假设我们的目标波形与参考波形均满足恒模约束，此时我们有上式的等价表示： \[\Re (\boldsymbol{x}^H\boldsymbol{x}_0) \geq 1-\frac{\varepsilon}{2}\] 此外，雷达波形通常希望最大化输出功率以提升目标探测性能，因此我们需要有恒模约束有： \[{\left\| \boldsymbol{x} \right\|}^2=1\] 频谱约束建模 假设给定一个初始波形，给定一组阻带约束集合考虑阻带约束下频带内的能量，有： \[\int_{f_1^k}^{f_2^k}{S_x(f) ~\text{d}f}=\boldsymbol{x}^H \boldsymbol{R}_{s,k}\boldsymbol{x}\] 其中有$S_x(f)={\left \sum\limits_{n=0}\limits^{N-1}{x(n)e^{-2j2\pi fn}} \right }^2$为信号的能量谱密度。且有： \[\boldsymbol{R}_{s,k}= \left\{ \begin{array}{ll} f_2^{k}-f_1^{k} &amp; m=l \\ \frac{e^{j2\pi f_2^{k}(m-l)}-e^{j2\pi f_1^{k}(m-l)}}{j2\pi (m-l)} &amp;m\neq l \end{array} \right. \quad, (m,l)\in \left\{1,\ldots,N\right\}^2\] 假设给定一组阻带约束集合$\left{ [f_1^1,f_2^1,\right],\ldots,[f_1^K, f_2^K]}$，因此我们有阻带内能量为： \[E_s=\sum_{k=1}^{K}\boldsymbol{x}^H\boldsymbol{R}_{s,k}\boldsymbol{x}\] ​ 此时对于多阻带约束，我们有： \(\boldsymbol{R}_s=\sum_{k=1}^{K}w_k\boldsymbol{R}_{s,k}\) ​ 其中$w_k$是我们对于多个阻带的权重约束。假设我们希望阻带内的最大能量为$E_s$，因此我们可以得到约束： \(\boldsymbol{x}^H\boldsymbol{R}_{s}\boldsymbol{x}\leq E_s\) 下面我们定义在给定这些条件下的WCFS建模分析： \(\mathscr{P}_1 \left\{ \begin{array}{ll} \min\limits_{\boldsymbol{x}} &amp; {\boldsymbol{x}}^H \boldsymbol{S} {\boldsymbol{x}} \\ \text{s.t.} &amp; \begin{array}{l} \boldsymbol{x}^H\boldsymbol{x}=1 \\ \Re (\boldsymbol{x}^H\boldsymbol{x}_0) \geq 1-\frac{\varepsilon}{2} \\ \boldsymbol{x}^H\boldsymbol{R}_{s}\boldsymbol{x}\leq E_s \end{array} \end{array} \right.\) 2. 问题形式化简 首先对于相似性约束进行松弛，其在形式上并不能够使用这种方式进行处理，考虑到${|\boldsymbol{x}^H\boldsymbol{x}_0|}^2= \boldsymbol{x}^H\boldsymbol{x}_0\boldsymbol{x}_0^H\boldsymbol{x}={\Re{(\boldsymbol{x}^H\boldsymbol{x}_0)}}^2+{\Im{(\boldsymbol{x}^H\boldsymbol{x}_0)}}^2 \geq {\Re{(\boldsymbol{x}^H\boldsymbol{x}_0)}}^2 \geq (1-\frac{\varepsilon}{2})^2$。我们考虑对其进行松弛，有： \(\boldsymbol{x}_0^H \boldsymbol{R}_0 \boldsymbol{x} \geq \delta\) 其中，$\delta=(1-\frac{\varepsilon}{2})^2$，$\boldsymbol{R}_0=\boldsymbol{x}_0\boldsymbol{x}_0^H$，因此我们可以得到 [\mathscr{P}2 \left{ \begin{array}{ll} \min\limits{\boldsymbol{x}} &amp; {\boldsymbol{x}}^H \boldsymbol{S} {\boldsymbol{x}} \text{s.t.} &amp; \begin{array}{l} \boldsymbol{x}^H\boldsymbol{x}=1 \ \boldsymbol{x}0^H \boldsymbol{R}_0 \boldsymbol{x} \geq \delta \boldsymbol{x}^H\boldsymbol{R}{s}\boldsymbol{x}\leq E_s \end{array} \end{array} \right.] 下面我们考虑问题$\mathscr{P}_2$，注意到其中的恒模约束以及目标函数较难处理。注意到目标函数事实上为一个实数，且考虑到$\text{tr}(\boldsymbol{A}\boldsymbol{B})=\text{tr}(\boldsymbol{A}\boldsymbol{B})$，其中$\text{tr}(\cdot)$为矩阵的迹函数，因此我们有 \({\boldsymbol{x}}^H \boldsymbol{S} {\boldsymbol{x}} = \text{tr}({\boldsymbol{x}}^H \boldsymbol{S} {\boldsymbol{x}}) = \text{tr}(\boldsymbol{S} {\boldsymbol{x}} {\boldsymbol{x}}^H) = \text{tr}(\boldsymbol{S} {\boldsymbol{X}})\) 其中$\boldsymbol{X}={\boldsymbol{x}} {\boldsymbol{x}}^H$。 利用相似的原理，我们可以将$\mathscr{P}_2$等价表示为： [\mathscr{P}3 \left{ \begin{array}{ll} \min\limits{\boldsymbol{X}} &amp; \text{tr}(\boldsymbol{S} {\boldsymbol{X}}) \text{s.t.} &amp; \begin{array}{l} \text{tr}({\boldsymbol{X}})=1 \ \text{tr}(\boldsymbol{R}0 {\boldsymbol{X}}) \geq \delta \text{tr}(\boldsymbol{R}{s} {\boldsymbol{X}})\leq E_s \end{array} \end{array} \right.] 针对于这一问题，我们忽略掉秩一约束求解出矩阵 $\boldsymbol{X}$，再对于矩阵$\boldsymbol{X}$进行秩一分解可以求解出最后的信号$\boldsymbol{x}$。 对于忽略掉秩一约束后的问题，有： [\left{ \begin{array}{ll} \min\limits_{\boldsymbol{X}} &amp; \text{tr}(\boldsymbol{S} {\boldsymbol{X}}) \text{s.t.} &amp; \begin{array}{l} \text{tr}(\boldsymbol{R}0 {\boldsymbol{X}}) \geq \delta \text{tr}(\boldsymbol{R}{s} {\boldsymbol{X}})\leq E_s \end{array} \end{array} \right.] 其是一个典型的凸优化问题，我们可以使用内点法对其进行求解。引入对数障碍函数： \(L_b(\cdot)=-\frac{1}{t}\log(-f(\cdot))\) 其中$t&gt;0$为控制因子， 即有： \(L(\boldsymbol{X})=\text{tr}(\boldsymbol{S} {\boldsymbol{X}}) -\frac{1}{t}\log(\text{tr}(\boldsymbol{R}_0 {\boldsymbol{X}})-\delta) -\frac{1}{t}\log(E_s-\text{tr}(\boldsymbol{R}_{s} {\boldsymbol{X}}))\) 令其导数为0可以得到： \(\boldsymbol{X}=\boldsymbol{S} -\frac{1}{t}\frac{\boldsymbol{R}_0}{\text{tr}(\boldsymbol{R}_0 {\boldsymbol{X}})-\delta} +\frac{1}{t}\frac{\boldsymbol{R}_s}{E_s-\text{tr}(\boldsymbol{R}_{s} {\boldsymbol{X}})}\) 采用迭代算法可以求解。可以注意到，我们最终所获得的矩阵肯定是一个Hermitian矩阵（其事实上为三个矩阵的加权和，而三个矩阵都是Hermitian矩阵）。 得到$\boldsymbol{X}$矩阵后，我们采用秩一矩阵分解来求解$\boldsymbol{x}$向量，即求解该问题： [\min_{x} \quad {\left| \boldsymbol{X}-\boldsymbol{x}\boldsymbol{x}^H \right|}^2] 对其求导我们可以解得$\boldsymbol{x}=(\boldsymbol{X}^H+\boldsymbol{X})^{-1}\frac{\boldsymbol{X}^H\boldsymbol{X}-1}{2}$" />
+<meta property="og:description" content="1. 约束与目标函数定义，问题初步建模 [\begin{align} f(\boldsymbol{x}) &amp;= \sum_{\alpha}\sum_{f}{\omega_{\alpha}} \Re \left{ {\left( \boldsymbol{F}N\boldsymbol{x} \right)}^H \varGamma{\alpha,f} {\left( \boldsymbol{F}_N\boldsymbol{x} \right)} \right} &amp;= \Re \left{ {\boldsymbol{x}}^H \boldsymbol{S} {\boldsymbol{x}} \right} \end{align}] 其中有$\varGamma=\sum_{\alpha}\sum_{f}{\omega_{\alpha}} \varGamma_{\alpha,f}$ ，$\boldsymbol{S}=\boldsymbol{F}_N^H \varGamma\boldsymbol{F}_N$ 。由于循环谱的对称性，可以注意到实际上为一个实对称矩阵，即有$\varGamma^H=\varGamma$，因此我们有 S 为一个 Hermite 矩阵（这里并不会受到$\boldsymbol{F}_N$特性的影响，事实上傅里叶变换矩阵是一个与酉矩阵有类似的性质，即有$\boldsymbol{F}_N^H\boldsymbol{F}_N=N\boldsymbol{I}$），因此目标函数事实上构成一个复二次型。因此目标函数恒为实数。 $$ $$ 即有： [f(x)={\boldsymbol{x}}^H \boldsymbol{S} {\boldsymbol{x}}] 检测概率建模 雷达目标检测的假设检验模型可以表征为： \[\left\{ \begin{array}{ll} \boldsymbol{H}_0: &amp; \boldsymbol{v} = \boldsymbol{n}\\ \boldsymbol{H}_1: &amp; \boldsymbol{v} = \alpha_T\boldsymbol{x} + \boldsymbol{n} \end{array} \right.\] 其中$\boldsymbol{v}$为接收到的回波，假设当前环境下噪声为高斯分布，且已知其协方差矩阵为正定矩阵$\boldsymbol{M}$，因此依据纽曼-皮尔逊准则可以得到检测器为： \[{\left| \boldsymbol{v}^H\boldsymbol{M}^{-1}\boldsymbol{c} \right|}^2 \stackrel{H_1}{\underset{H_0}{\gtrless}} G\] 其中$G$为在给定虚警概率$P_{fa}$下的检测阈值，且有检测概率为： \[P_d = Q \left( \sqrt{2 {\left|\alpha_T\right|}^2\boldsymbol{c}^H\boldsymbol{M}^{-1}\boldsymbol{c} } ,\sqrt{-2 \ln{P_{fa}}} \right)\] 因此对于给定的协方差矩阵，检测概率仅仅依赖于信干噪比，即有： \[\text{SINR}={\left|\alpha_T\right|}^2\boldsymbol{c}^H\boldsymbol{M}^{-1}\boldsymbol{c}\] 最大化检测概率即最大化$\text{SINR}$值。 相似度约束建模 一些常用的雷达波形拥有较为良好的性质，假设给定的参考波形为$\boldsymbol{x}_0$，因此我们可以设置波形相似度约束有： \[{\left\| \boldsymbol{x}-\boldsymbol{x}_0 \right\|}^2 \leq \varepsilon\] 其中$\varepsilon$为指定的波形相似度参数，用于控制波形可设计的范围大小。 注意到事实上我们有： \[{\left\|\boldsymbol{x}-\boldsymbol{x}_0 \right\|}^2 = {\left(\boldsymbol{x}-\boldsymbol{x}_0 \right)}^H {\left( \boldsymbol{x}-\boldsymbol{x}_0 \right)} = \boldsymbol{x}^H\boldsymbol{x}+\boldsymbol{x}_0^H\boldsymbol{x}_0-\boldsymbol{x}^H\boldsymbol{x}_0-\boldsymbol{x}_0^H\boldsymbol{x}\] 假设我们的目标波形与参考波形均满足恒模约束，此时我们有上式的等价表示： \[\Re (\boldsymbol{x}^H\boldsymbol{x}_0) \geq 1-\frac{\varepsilon}{2}\] 此外，雷达波形通常希望最大化输出功率以提升目标探测性能，因此我们需要有恒模约束有： \[{\left\| \boldsymbol{x} \right\|}^2=1\] 频谱约束建模 假设给定一个初始波形，给定一组阻带约束集合考虑阻带约束下频带内的能量，有： \[\int_{f_1^k}^{f_2^k}{S_x(f) ~\text{d}f}=\boldsymbol{x}^H \boldsymbol{R}_{s,k}\boldsymbol{x}\] 其中有$S_x(f)={\left \sum\limits_{n=0}\limits^{N-1}{x(n)e^{-2j2\pi fn}} \right }^2$为信号的能量谱密度。且有： \[\boldsymbol{R}_{s,k}= \left\{ \begin{array}{ll} f_2^{k}-f_1^{k} &amp; m=l \\ \frac{e^{j2\pi f_2^{k}(m-l)}-e^{j2\pi f_1^{k}(m-l)}}{j2\pi (m-l)} &amp;m\neq l \end{array} \right. \quad, (m,l)\in \left\{1,\ldots,N\right\}^2\] 假设给定一组阻带约束集合$\left{ [f_1^1,f_2^1,\right],\ldots,[f_1^K, f_2^K]}$，因此我们有阻带内能量为： \[E_s=\sum_{k=1}^{K}\boldsymbol{x}^H\boldsymbol{R}_{s,k}\boldsymbol{x}\] ​ 此时对于多阻带约束，我们有： \(\boldsymbol{R}_s=\sum_{k=1}^{K}w_k\boldsymbol{R}_{s,k}\) ​ 其中$w_k$是我们对于多个阻带的权重约束。假设我们希望阻带内的最大能量为$E_s$，因此我们可以得到约束： \(\boldsymbol{x}^H\boldsymbol{R}_{s}\boldsymbol{x}\leq E_s\) 下面我们定义在给定这些条件下的WCFS建模分析： \(\mathscr{P}_1 \left\{ \begin{array}{ll} \min\limits_{\boldsymbol{x}} &amp; {\boldsymbol{x}}^H \boldsymbol{S} {\boldsymbol{x}} \\ \text{s.t.} &amp; \begin{array}{l} \boldsymbol{x}^H\boldsymbol{x}=1 \\ \Re (\boldsymbol{x}^H\boldsymbol{x}_0) \geq 1-\frac{\varepsilon}{2} \\ \boldsymbol{x}^H\boldsymbol{R}_{s}\boldsymbol{x}\leq E_s \end{array} \end{array} \right.\) 2. 问题形式化简 首先对于相似性约束进行松弛，其在形式上并不能够使用这种方式进行处理，考虑到${|\boldsymbol{x}^H\boldsymbol{x}_0|}^2= \boldsymbol{x}^H\boldsymbol{x}_0\boldsymbol{x}_0^H\boldsymbol{x}={\Re{(\boldsymbol{x}^H\boldsymbol{x}_0)}}^2+{\Im{(\boldsymbol{x}^H\boldsymbol{x}_0)}}^2 \geq {\Re{(\boldsymbol{x}^H\boldsymbol{x}_0)}}^2 \geq (1-\frac{\varepsilon}{2})^2$。我们考虑对其进行松弛，有： \(\boldsymbol{x}_0^H \boldsymbol{R}_0 \boldsymbol{x} \geq \delta\) 其中，$\delta=(1-\frac{\varepsilon}{2})^2$，$\boldsymbol{R}_0=\boldsymbol{x}_0\boldsymbol{x}_0^H$，因此我们可以得到 [\mathscr{P}2 \left{ \begin{array}{ll} \min\limits{\boldsymbol{x}} &amp; {\boldsymbol{x}}^H \boldsymbol{S} {\boldsymbol{x}} \text{s.t.} &amp; \begin{array}{l} \boldsymbol{x}^H\boldsymbol{x}=1 \ \boldsymbol{x}0^H \boldsymbol{R}_0 \boldsymbol{x} \geq \delta \boldsymbol{x}^H\boldsymbol{R}{s}\boldsymbol{x}\leq E_s \end{array} \end{array} \right.] 下面我们考虑问题$\mathscr{P}_2$，注意到其中的恒模约束以及目标函数较难处理。注意到目标函数事实上为一个实数，且考虑到$\text{tr}(\boldsymbol{A}\boldsymbol{B})=\text{tr}(\boldsymbol{A}\boldsymbol{B})$，其中$\text{tr}(\cdot)$为矩阵的迹函数，因此我们有 \({\boldsymbol{x}}^H \boldsymbol{S} {\boldsymbol{x}} = \text{tr}({\boldsymbol{x}}^H \boldsymbol{S} {\boldsymbol{x}}) = \text{tr}(\boldsymbol{S} {\boldsymbol{x}} {\boldsymbol{x}}^H) = \text{tr}(\boldsymbol{S} {\boldsymbol{X}})\) 其中$\boldsymbol{X}={\boldsymbol{x}} {\boldsymbol{x}}^H$。 利用相似的原理，我们可以将$\mathscr{P}_2$等价表示为： [\mathscr{P}3 \left{ \begin{array}{ll} \min\limits{\boldsymbol{X}} &amp; \text{tr}(\boldsymbol{S} {\boldsymbol{X}}) \text{s.t.} &amp; \begin{array}{l} \text{tr}({\boldsymbol{X}})=1 \ \text{tr}(\boldsymbol{R}0 {\boldsymbol{X}}) \geq \delta \text{tr}(\boldsymbol{R}{s} {\boldsymbol{X}})\leq E_s \end{array} \end{array} \right.] 针对于这一问题，我们忽略掉秩一约束求解出矩阵 $\boldsymbol{X}$，再对于矩阵$\boldsymbol{X}$进行秩一分解可以求解出最后的信号$\boldsymbol{x}$。 对于忽略掉秩一约束后的问题，有： [\left{ \begin{array}{ll} \min\limits_{\boldsymbol{X}} &amp; \text{tr}(\boldsymbol{S} {\boldsymbol{X}}) \text{s.t.} &amp; \begin{array}{l} \text{tr}(\boldsymbol{R}0 {\boldsymbol{X}}) \geq \delta \text{tr}(\boldsymbol{R}{s} {\boldsymbol{X}})\leq E_s \end{array} \end{array} \right.] 其是一个典型的凸优化问题，我们可以使用内点法对其进行求解。引入对数障碍函数： \(L_b(\cdot)=-\frac{1}{t}\log(-f(\cdot))\) 其中$t&gt;0$为控制因子， 即有： \(L(\boldsymbol{X})=\text{tr}(\boldsymbol{S} {\boldsymbol{X}}) -\frac{1}{t}\log(\text{tr}(\boldsymbol{R}_0 {\boldsymbol{X}})-\delta) -\frac{1}{t}\log(E_s-\text{tr}(\boldsymbol{R}_{s} {\boldsymbol{X}}))\) 令其导数为0可以得到： \(\boldsymbol{X}=\boldsymbol{S} -\frac{1}{t}\frac{\boldsymbol{R}_0}{\text{tr}(\boldsymbol{R}_0 {\boldsymbol{X}})-\delta} +\frac{1}{t}\frac{\boldsymbol{R}_s}{E_s-\text{tr}(\boldsymbol{R}_{s} {\boldsymbol{X}})}\) 采用迭代算法可以求解。可以注意到，我们最终所获得的矩阵肯定是一个Hermitian矩阵（其事实上为三个矩阵的加权和，而三个矩阵都是Hermitian矩阵）。 得到$\boldsymbol{X}$矩阵后，我们采用秩一矩阵分解来求解$\boldsymbol{x}$向量，即求解该问题： [\min_{x} \quad {\left| \boldsymbol{X}-\boldsymbol{x}\boldsymbol{x}^H \right|}^2] 对其求导我们可以解得$\boldsymbol{x}=(\boldsymbol{X}^H+\boldsymbol{X})^{-1}\frac{\boldsymbol{X}^H\boldsymbol{X}-1}{2}$" />
+<link rel="canonical" href="http://0.0.0.0:4000/posts/%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC2/" />
+<meta property="og:url" content="http://0.0.0.0:4000/posts/%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC2/" />
+<meta property="og:site_name" content="Fish" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-05-20T22:01:08+08:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="公式推导2" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Xinyu Huang","url":"https://github.com/huang-cumt/"},"dateModified":"2025-03-30T10:24:11+08:00","datePublished":"2024-05-20T22:01:08+08:00","description":"1. 约束与目标函数定义，问题初步建模 [\\begin{align} f(\\boldsymbol{x}) &amp;= \\sum_{\\alpha}\\sum_{f}{\\omega_{\\alpha}} \\Re \\left{ {\\left( \\boldsymbol{F}N\\boldsymbol{x} \\right)}^H \\varGamma{\\alpha,f} {\\left( \\boldsymbol{F}_N\\boldsymbol{x} \\right)} \\right} &amp;= \\Re \\left{ {\\boldsymbol{x}}^H \\boldsymbol{S} {\\boldsymbol{x}} \\right} \\end{align}] 其中有$\\varGamma=\\sum_{\\alpha}\\sum_{f}{\\omega_{\\alpha}} \\varGamma_{\\alpha,f}$ ，$\\boldsymbol{S}=\\boldsymbol{F}_N^H \\varGamma\\boldsymbol{F}_N$ 。由于循环谱的对称性，可以注意到实际上为一个实对称矩阵，即有$\\varGamma^H=\\varGamma$，因此我们有 S 为一个 Hermite 矩阵（这里并不会受到$\\boldsymbol{F}_N$特性的影响，事实上傅里叶变换矩阵是一个与酉矩阵有类似的性质，即有$\\boldsymbol{F}_N^H\\boldsymbol{F}_N=N\\boldsymbol{I}$），因此目标函数事实上构成一个复二次型。因此目标函数恒为实数。 $$ $$ 即有： [f(x)={\\boldsymbol{x}}^H \\boldsymbol{S} {\\boldsymbol{x}}] 检测概率建模 雷达目标检测的假设检验模型可以表征为： \\[\\left\\{ \\begin{array}{ll} \\boldsymbol{H}_0: &amp; \\boldsymbol{v} = \\boldsymbol{n}\\\\ \\boldsymbol{H}_1: &amp; \\boldsymbol{v} = \\alpha_T\\boldsymbol{x} + \\boldsymbol{n} \\end{array} \\right.\\] 其中$\\boldsymbol{v}$为接收到的回波，假设当前环境下噪声为高斯分布，且已知其协方差矩阵为正定矩阵$\\boldsymbol{M}$，因此依据纽曼-皮尔逊准则可以得到检测器为： \\[{\\left| \\boldsymbol{v}^H\\boldsymbol{M}^{-1}\\boldsymbol{c} \\right|}^2 \\stackrel{H_1}{\\underset{H_0}{\\gtrless}} G\\] 其中$G$为在给定虚警概率$P_{fa}$下的检测阈值，且有检测概率为： \\[P_d = Q \\left( \\sqrt{2 {\\left|\\alpha_T\\right|}^2\\boldsymbol{c}^H\\boldsymbol{M}^{-1}\\boldsymbol{c} } ,\\sqrt{-2 \\ln{P_{fa}}} \\right)\\] 因此对于给定的协方差矩阵，检测概率仅仅依赖于信干噪比，即有： \\[\\text{SINR}={\\left|\\alpha_T\\right|}^2\\boldsymbol{c}^H\\boldsymbol{M}^{-1}\\boldsymbol{c}\\] 最大化检测概率即最大化$\\text{SINR}$值。 相似度约束建模 一些常用的雷达波形拥有较为良好的性质，假设给定的参考波形为$\\boldsymbol{x}_0$，因此我们可以设置波形相似度约束有： \\[{\\left\\| \\boldsymbol{x}-\\boldsymbol{x}_0 \\right\\|}^2 \\leq \\varepsilon\\] 其中$\\varepsilon$为指定的波形相似度参数，用于控制波形可设计的范围大小。 注意到事实上我们有： \\[{\\left\\|\\boldsymbol{x}-\\boldsymbol{x}_0 \\right\\|}^2 = {\\left(\\boldsymbol{x}-\\boldsymbol{x}_0 \\right)}^H {\\left( \\boldsymbol{x}-\\boldsymbol{x}_0 \\right)} = \\boldsymbol{x}^H\\boldsymbol{x}+\\boldsymbol{x}_0^H\\boldsymbol{x}_0-\\boldsymbol{x}^H\\boldsymbol{x}_0-\\boldsymbol{x}_0^H\\boldsymbol{x}\\] 假设我们的目标波形与参考波形均满足恒模约束，此时我们有上式的等价表示： \\[\\Re (\\boldsymbol{x}^H\\boldsymbol{x}_0) \\geq 1-\\frac{\\varepsilon}{2}\\] 此外，雷达波形通常希望最大化输出功率以提升目标探测性能，因此我们需要有恒模约束有： \\[{\\left\\| \\boldsymbol{x} \\right\\|}^2=1\\] 频谱约束建模 假设给定一个初始波形，给定一组阻带约束集合考虑阻带约束下频带内的能量，有： \\[\\int_{f_1^k}^{f_2^k}{S_x(f) ~\\text{d}f}=\\boldsymbol{x}^H \\boldsymbol{R}_{s,k}\\boldsymbol{x}\\] 其中有$S_x(f)={\\left \\sum\\limits_{n=0}\\limits^{N-1}{x(n)e^{-2j2\\pi fn}} \\right }^2$为信号的能量谱密度。且有： \\[\\boldsymbol{R}_{s,k}= \\left\\{ \\begin{array}{ll} f_2^{k}-f_1^{k} &amp; m=l \\\\ \\frac{e^{j2\\pi f_2^{k}(m-l)}-e^{j2\\pi f_1^{k}(m-l)}}{j2\\pi (m-l)} &amp;m\\neq l \\end{array} \\right. \\quad, (m,l)\\in \\left\\{1,\\ldots,N\\right\\}^2\\] 假设给定一组阻带约束集合$\\left{ [f_1^1,f_2^1,\\right],\\ldots,[f_1^K, f_2^K]}$，因此我们有阻带内能量为： \\[E_s=\\sum_{k=1}^{K}\\boldsymbol{x}^H\\boldsymbol{R}_{s,k}\\boldsymbol{x}\\] ​ 此时对于多阻带约束，我们有： \\(\\boldsymbol{R}_s=\\sum_{k=1}^{K}w_k\\boldsymbol{R}_{s,k}\\) ​ 其中$w_k$是我们对于多个阻带的权重约束。假设我们希望阻带内的最大能量为$E_s$，因此我们可以得到约束： \\(\\boldsymbol{x}^H\\boldsymbol{R}_{s}\\boldsymbol{x}\\leq E_s\\) 下面我们定义在给定这些条件下的WCFS建模分析： \\(\\mathscr{P}_1 \\left\\{ \\begin{array}{ll} \\min\\limits_{\\boldsymbol{x}} &amp; {\\boldsymbol{x}}^H \\boldsymbol{S} {\\boldsymbol{x}} \\\\ \\text{s.t.} &amp; \\begin{array}{l} \\boldsymbol{x}^H\\boldsymbol{x}=1 \\\\ \\Re (\\boldsymbol{x}^H\\boldsymbol{x}_0) \\geq 1-\\frac{\\varepsilon}{2} \\\\ \\boldsymbol{x}^H\\boldsymbol{R}_{s}\\boldsymbol{x}\\leq E_s \\end{array} \\end{array} \\right.\\) 2. 问题形式化简 首先对于相似性约束进行松弛，其在形式上并不能够使用这种方式进行处理，考虑到${|\\boldsymbol{x}^H\\boldsymbol{x}_0|}^2= \\boldsymbol{x}^H\\boldsymbol{x}_0\\boldsymbol{x}_0^H\\boldsymbol{x}={\\Re{(\\boldsymbol{x}^H\\boldsymbol{x}_0)}}^2+{\\Im{(\\boldsymbol{x}^H\\boldsymbol{x}_0)}}^2 \\geq {\\Re{(\\boldsymbol{x}^H\\boldsymbol{x}_0)}}^2 \\geq (1-\\frac{\\varepsilon}{2})^2$。我们考虑对其进行松弛，有： \\(\\boldsymbol{x}_0^H \\boldsymbol{R}_0 \\boldsymbol{x} \\geq \\delta\\) 其中，$\\delta=(1-\\frac{\\varepsilon}{2})^2$，$\\boldsymbol{R}_0=\\boldsymbol{x}_0\\boldsymbol{x}_0^H$，因此我们可以得到 [\\mathscr{P}2 \\left{ \\begin{array}{ll} \\min\\limits{\\boldsymbol{x}} &amp; {\\boldsymbol{x}}^H \\boldsymbol{S} {\\boldsymbol{x}} \\text{s.t.} &amp; \\begin{array}{l} \\boldsymbol{x}^H\\boldsymbol{x}=1 \\ \\boldsymbol{x}0^H \\boldsymbol{R}_0 \\boldsymbol{x} \\geq \\delta \\boldsymbol{x}^H\\boldsymbol{R}{s}\\boldsymbol{x}\\leq E_s \\end{array} \\end{array} \\right.] 下面我们考虑问题$\\mathscr{P}_2$，注意到其中的恒模约束以及目标函数较难处理。注意到目标函数事实上为一个实数，且考虑到$\\text{tr}(\\boldsymbol{A}\\boldsymbol{B})=\\text{tr}(\\boldsymbol{A}\\boldsymbol{B})$，其中$\\text{tr}(\\cdot)$为矩阵的迹函数，因此我们有 \\({\\boldsymbol{x}}^H \\boldsymbol{S} {\\boldsymbol{x}} = \\text{tr}({\\boldsymbol{x}}^H \\boldsymbol{S} {\\boldsymbol{x}}) = \\text{tr}(\\boldsymbol{S} {\\boldsymbol{x}} {\\boldsymbol{x}}^H) = \\text{tr}(\\boldsymbol{S} {\\boldsymbol{X}})\\) 其中$\\boldsymbol{X}={\\boldsymbol{x}} {\\boldsymbol{x}}^H$。 利用相似的原理，我们可以将$\\mathscr{P}_2$等价表示为： [\\mathscr{P}3 \\left{ \\begin{array}{ll} \\min\\limits{\\boldsymbol{X}} &amp; \\text{tr}(\\boldsymbol{S} {\\boldsymbol{X}}) \\text{s.t.} &amp; \\begin{array}{l} \\text{tr}({\\boldsymbol{X}})=1 \\ \\text{tr}(\\boldsymbol{R}0 {\\boldsymbol{X}}) \\geq \\delta \\text{tr}(\\boldsymbol{R}{s} {\\boldsymbol{X}})\\leq E_s \\end{array} \\end{array} \\right.] 针对于这一问题，我们忽略掉秩一约束求解出矩阵 $\\boldsymbol{X}$，再对于矩阵$\\boldsymbol{X}$进行秩一分解可以求解出最后的信号$\\boldsymbol{x}$。 对于忽略掉秩一约束后的问题，有： [\\left{ \\begin{array}{ll} \\min\\limits_{\\boldsymbol{X}} &amp; \\text{tr}(\\boldsymbol{S} {\\boldsymbol{X}}) \\text{s.t.} &amp; \\begin{array}{l} \\text{tr}(\\boldsymbol{R}0 {\\boldsymbol{X}}) \\geq \\delta \\text{tr}(\\boldsymbol{R}{s} {\\boldsymbol{X}})\\leq E_s \\end{array} \\end{array} \\right.] 其是一个典型的凸优化问题，我们可以使用内点法对其进行求解。引入对数障碍函数： \\(L_b(\\cdot)=-\\frac{1}{t}\\log(-f(\\cdot))\\) 其中$t&gt;0$为控制因子， 即有： \\(L(\\boldsymbol{X})=\\text{tr}(\\boldsymbol{S} {\\boldsymbol{X}}) -\\frac{1}{t}\\log(\\text{tr}(\\boldsymbol{R}_0 {\\boldsymbol{X}})-\\delta) -\\frac{1}{t}\\log(E_s-\\text{tr}(\\boldsymbol{R}_{s} {\\boldsymbol{X}}))\\) 令其导数为0可以得到： \\(\\boldsymbol{X}=\\boldsymbol{S} -\\frac{1}{t}\\frac{\\boldsymbol{R}_0}{\\text{tr}(\\boldsymbol{R}_0 {\\boldsymbol{X}})-\\delta} +\\frac{1}{t}\\frac{\\boldsymbol{R}_s}{E_s-\\text{tr}(\\boldsymbol{R}_{s} {\\boldsymbol{X}})}\\) 采用迭代算法可以求解。可以注意到，我们最终所获得的矩阵肯定是一个Hermitian矩阵（其事实上为三个矩阵的加权和，而三个矩阵都是Hermitian矩阵）。 得到$\\boldsymbol{X}$矩阵后，我们采用秩一矩阵分解来求解$\\boldsymbol{x}$向量，即求解该问题： [\\min_{x} \\quad {\\left| \\boldsymbol{X}-\\boldsymbol{x}\\boldsymbol{x}^H \\right|}^2] 对其求导我们可以解得$\\boldsymbol{x}=(\\boldsymbol{X}^H+\\boldsymbol{X})^{-1}\\frac{\\boldsymbol{X}^H\\boldsymbol{X}-1}{2}$","headline":"公式推导2","mainEntityOfPage":{"@type":"WebPage","@id":"http://0.0.0.0:4000/posts/%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC2/"},"url":"http://0.0.0.0:4000/posts/%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC2/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <title>公式推导2 | Fish
+  </title>
+
+  <!--
+  The Favicons for Web, Android, Microsoft, and iOS (iPhone and iPad) Apps
+  Generated by: https://realfavicongenerator.net/
+-->
+
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicons/favicon-16x16.png">
+
+  <link rel="manifest" href="/assets/img/favicons/site.webmanifest">
+
+<link rel="shortcut icon" href="/assets/img/favicons/favicon.ico">
+<meta name="apple-mobile-web-app-title" content="Fish">
+<meta name="application-name" content="Fish">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="msapplication-config" content="/assets/img/favicons/browserconfig.xml">
+<meta name="theme-color" content="#ffffff">
+
+
+  <!-- Resource Hints -->
+  
+    
+      
+        <link rel="preconnect" href="https://fonts.googleapis.com" >
+      
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" >
+      
+    
+      
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      
+        <link rel="dns-prefetch" href="https://fonts.gstatic.com" >
+      
+    
+      
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" >
+      
+        <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" >
+      
+    
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Source+Sans+Pro:wght@400;600;700;900&display=swap">
+  
+
+  <!-- GA -->
+  
+
+  <!-- Bootstrap -->
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  
+
+  <!-- Theme style -->
+  <link rel="stylesheet" href="/assets/css/jekyll-theme-chirpy.css">
+
+  <!-- Web Font -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Source+Sans+Pro:wght@400;600;700;900&display=swap">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css">
+
+  <!-- 3rd-party Dependencies -->
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tocbot@4.27.20/dist/tocbot.min.css">
+  
+
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/loading-attribute-polyfill@2.1.1/dist/loading-attribute-polyfill.min.css">
+  
+
+  
+    <!-- Image Popup -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox@3.3.0/dist/css/glightbox.min.css">
+  
+
+  <!-- JavaScript -->
+
+  
+    <!-- Switch the mode between dark and light. -->
+
+<script type="text/javascript">
+  class ModeToggle {
+    static get MODE_KEY() {
+      return 'mode';
+    }
+    static get MODE_ATTR() {
+      return 'data-mode';
+    }
+    static get DARK_MODE() {
+      return 'dark';
+    }
+    static get LIGHT_MODE() {
+      return 'light';
+    }
+    static get ID() {
+      return 'mode-toggle';
+    }
+
+    constructor() {
+      let self = this;this.sysDarkPrefers.addEventListener('change', () => {
+        if (self.hasMode) {
+          self.clearMode();
+        }
+        self.notify();
+      });
+
+      if (!this.hasMode) {
+        return;
+      }
+
+      if (this.isDarkMode) {
+        this.setDark();
+      } else {
+        this.setLight();
+      }
+    }
+
+    get sysDarkPrefers() {
+      return window.matchMedia('(prefers-color-scheme: dark)');
+    }
+
+    get isPreferDark() {
+      return this.sysDarkPrefers.matches;
+    }
+
+    get isDarkMode() {
+      return this.mode === ModeToggle.DARK_MODE;
+    }
+
+    get hasMode() {
+      return this.mode != null;
+    }
+
+    get mode() {
+      return sessionStorage.getItem(ModeToggle.MODE_KEY);
+    }get modeStatus() {
+      if (this.hasMode) {
+        return this.mode;
+      } else {
+        return this.isPreferDark ? ModeToggle.DARK_MODE : ModeToggle.LIGHT_MODE;
+      }
+    }
+
+    setDark() {
+      document.documentElement.setAttribute(ModeToggle.MODE_ATTR, ModeToggle.DARK_MODE);
+      sessionStorage.setItem(ModeToggle.MODE_KEY, ModeToggle.DARK_MODE);
+    }
+
+    setLight() {
+      document.documentElement.setAttribute(ModeToggle.MODE_ATTR, ModeToggle.LIGHT_MODE);
+      sessionStorage.setItem(ModeToggle.MODE_KEY, ModeToggle.LIGHT_MODE);
+    }
+
+    clearMode() {
+      document.documentElement.removeAttribute(ModeToggle.MODE_ATTR);
+      sessionStorage.removeItem(ModeToggle.MODE_KEY);
+    }notify() {
+      window.postMessage(
+        {
+          direction: ModeToggle.ID,
+          message: this.modeStatus
+        },
+        '*'
+      );
+    }
+
+    flipMode() {
+      if (this.hasMode) {
+        this.clearMode();
+      } else {
+        if (this.isPreferDark) {
+          this.setLight();
+        } else {
+          this.setDark();
+        }
+      }
+
+      this.notify();
+    }
+  }
+
+  const modeToggle = new ModeToggle();
+</script>
+
+  
+
+  <!-- A placeholder to allow defining custom metadata -->
+
+</head>
+
+
+  <body>
+    <!-- The Side Bar -->
+
+<aside aria-label="Sidebar" id="sidebar" class="d-flex flex-column align-items-end">
+  <header class="profile-wrapper">
+    <a href="/" id="avatar" class="rounded-circle"><img src="/assets/img/picture/avatar.jpg" width="112" height="112" alt="avatar" onerror="this.style.display='none'"></a>
+
+    <h1 class="site-title">
+      <a href="/">Fish</a>
+    </h1>
+    <p class="site-subtitle fst-italic mb-0">Radar, Math, Optimization and life</p>
+  </header>
+  <!-- .profile-wrapper -->
+
+  <nav class="flex-column flex-grow-1 w-100 ps-0">
+    <ul class="nav">
+      <!-- home -->
+      <li class="nav-item">
+        <a href="/" class="nav-link">
+          <i class="fa-fw fas fa-home"></i>
+          <span>HOME</span>
+        </a>
+      </li>
+      <!-- the real tabs -->
+      
+        <li class="nav-item">
+          <a href="/categories/" class="nav-link">
+            <i class="fa-fw fas fa-stream"></i>
+            
+
+            <span>CATEGORIES</span>
+          </a>
+        </li>
+        <!-- .nav-item -->
+      
+        <li class="nav-item">
+          <a href="/tags/" class="nav-link">
+            <i class="fa-fw fas fa-tags"></i>
+            
+
+            <span>TAGS</span>
+          </a>
+        </li>
+        <!-- .nav-item -->
+      
+        <li class="nav-item">
+          <a href="/archives/" class="nav-link">
+            <i class="fa-fw fas fa-archive"></i>
+            
+
+            <span>ARCHIVES</span>
+          </a>
+        </li>
+        <!-- .nav-item -->
+      
+        <li class="nav-item">
+          <a href="/about/" class="nav-link">
+            <i class="fa-fw fas fa-info-circle"></i>
+            
+
+            <span>ABOUT</span>
+          </a>
+        </li>
+        <!-- .nav-item -->
+      
+    </ul>
+  </nav>
+
+  <div class="sidebar-bottom d-flex flex-wrap  align-items-center w-100">
+    
+      <button type="button" class="btn btn-link nav-link" aria-label="Switch Mode" id="mode-toggle">
+        <i class="fas fa-adjust"></i>
+      </button>
+
+      
+        <span class="icon-border"></span>
+      
+    
+
+    
+      
+
+      
+        <a
+          href="https://github.com/huang-cumt"
+          aria-label="github"
+          
+
+          
+            target="_blank"
+            
+          
+
+          
+
+          
+            rel="noopener noreferrer"
+          
+        >
+          <i class="fab fa-github"></i>
+        </a>
+      
+    
+      
+
+      
+        <a
+          href="javascript:location.href = 'mailto:' + ['learning_huang','163.com'].join('@')"
+          aria-label="email"
+          
+
+          
+
+          
+
+          
+        >
+          <i class="fas fa-envelope"></i>
+        </a>
+      
+    
+      
+
+      
+        <a
+          href="http://test"
+          aria-label="bilibili"
+          
+
+          
+            target="_blank"
+            
+          
+
+          
+
+          
+            rel="noopener noreferrer"
+          
+        >
+          <i class="fa-brands fa-bilibili"></i>
+        </a>
+      
+    
+  </div>
+  <!-- .sidebar-bottom -->
+</aside>
+<!-- #sidebar -->
+
+
+    <div id="main-wrapper" class="d-flex justify-content-center">
+      <div class="container d-flex flex-column px-xxl-5">
+        <!-- The Top Bar -->
+
+<header id="topbar-wrapper" aria-label="Top Bar">
+  <div
+    id="topbar"
+    class="d-flex align-items-center justify-content-between px-lg-3 h-100"
+  >
+    <nav id="breadcrumb" aria-label="Breadcrumb">
+      
+
+      
+        
+          
+            <span>
+              <a href="/">Home</a>
+            </span>
+
+          
+        
+          
+        
+          
+            
+              <span>公式推导2</span>
+            
+
+          
+        
+      
+    </nav>
+    <!-- endof #breadcrumb -->
+
+    <button type="button" id="sidebar-trigger" class="btn btn-link">
+      <i class="fas fa-bars fa-fw"></i>
+    </button>
+
+    <div id="topbar-title">
+      Post
+    </div>
+
+    <button type="button" id="search-trigger" class="btn btn-link">
+      <i class="fas fa-search fa-fw"></i>
+    </button>
+
+    <search id="search" class="align-items-center ms-3 ms-lg-0">
+      <i class="fas fa-search fa-fw"></i>
+      <input
+        class="form-control"
+        id="search-input"
+        type="search"
+        aria-label="search"
+        autocomplete="off"
+        placeholder="Search..."
+      >
+    </search>
+    <button type="button" class="btn btn-link text-decoration-none" id="search-cancel">Cancel</button>
+  </div>
+</header>
+
+
+        <div class="row flex-grow-1">
+          <main aria-label="Main Content" class="col-12 col-lg-11 col-xl-9 px-md-4">
+            
+              <!-- Refactor the HTML structure -->
+
+
+
+<!--
+  In order to allow a wide table to scroll horizontally,
+  we suround the markdown table with `<div class="table-wrapper">` and `</div>`
+-->
+
+
+
+<!--
+  Fixed kramdown code highlight rendering:
+  https://github.com/penibelst/jekyll-compress-html/issues/101
+  https://github.com/penibelst/jekyll-compress-html/issues/71#issuecomment-188144901
+-->
+
+
+
+<!-- Change the icon of checkbox -->
+
+
+
+<!-- Handle images -->
+
+
+
+
+
+<!-- Add header for code snippets -->
+
+
+
+<!-- Create heading anchors -->
+
+
+
+
+
+  
+  
+
+  
+    
+    
+
+    
+      
+        
+        
+      
+
+      
+      
+
+      
+      
+      
+
+      
+    
+      
+
+      
+      
+
+      
+      
+      
+
+      
+    
+
+    
+  
+
+  
+  
+
+  
+
+  
+  
+
+  
+
+  
+  
+
+  
+
+
+
+
+<!-- return -->
+
+
+
+
+<article class="px-1">
+  <header>
+    <div id="waifu">
+  <div id="waifu-message"></div>
+  <div class="waifu-tool">
+    <span class="icon-next"></span>
+    <span class="icon-home"></span>
+    <span class="icon-message"></span>
+    <span class="icon-camera"></span>
+    <span class="icon-volumeup"></span>
+    <span class="icon-volumedown"></span>
+    <span class="icon-about"></span>
+    <span class="icon-cross"></span>
+  </div>
+  <canvas id="live2d2"></canvas>
+  <canvas id="live2d4"></canvas>
+</div>
+<!-- src 中改为你存放的路径 -->
+<script src="/assets/live2djs/dist/live2d_bundle.js"></script>
+<script async type="module" src="/assets/live2djs/waifu-tips.js"></script>
+
+    <h1 data-toc-skip>公式推导2</h1>
+    
+
+    <div class="post-meta text-muted">
+      <!-- published date -->
+      <span>
+        Posted
+        <!--
+  Date format snippet
+  See: ${JS_ROOT}/utils/locale-dateime.js
+-->
+
+
+
+
+<time
+  
+  data-ts="1716213668"
+  data-df="ll"
+  
+    data-bs-toggle="tooltip" data-bs-placement="bottom"
+  
+>
+  May 20, 2024
+</time>
+
+      </span>
+
+      <!-- lastmod date -->
+      
+        <span>
+          Updated
+          <!--
+  Date format snippet
+  See: ${JS_ROOT}/utils/locale-dateime.js
+-->
+
+
+
+
+<time
+  
+  data-ts="1743301451"
+  data-df="ll"
+  
+    data-bs-toggle="tooltip" data-bs-placement="bottom"
+  
+>
+  Mar 30, 2025
+</time>
+
+        </span>
+      
+
+      
+
+      <div class="d-flex justify-content-between">
+        <!-- author(s) -->
+        <span>
+          
+
+          By
+
+          <em>
+            
+              
+                <a href="https://github.com/huang-cumt/">Xinyu Huang</a>
+                
+              
+            
+          </em>
+        </span>
+
+        <!-- read time -->
+        <!-- Calculate the post's reading time, and display the word count in tooltip -->
+
+
+
+<!-- words per minute -->
+
+
+
+
+
+
+
+
+
+
+<!-- return element -->
+<span
+  class="readtime"
+  data-bs-toggle="tooltip"
+  data-bs-placement="bottom"
+  title="1269 words"
+>
+  <em>7 min</em> read</span>
+
+      </div>
+      <!-- .d-flex -->
+    </div>
+    <!-- .post-meta -->
+  </header>
+
+  <div class="content">
+    <h2 id="1-约束与目标函数定义问题初步建模"><span class="me-2">1. 约束与目标函数定义，问题初步建模</span><a href="#1-约束与目标函数定义问题初步建模" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2>
+
+\[\begin{align}
+f(\boldsymbol{x}) &amp;=
+\sum_{\alpha}\sum_{f}{\omega_{\alpha}}
+\Re
+\left\{
+{\left( \boldsymbol{F}_N\boldsymbol{x} \right)}^H \varGamma_{\alpha,f} {\left( \boldsymbol{F}_N\boldsymbol{x} \right)}
+\right\}\\
+&amp;=
+\Re
+\left\{
+{\boldsymbol{x}}^H  \boldsymbol{S}  {\boldsymbol{x}}
+\right\}
+\end{align}\]
+
+<p>其中有$\varGamma=\sum_{\alpha}\sum_{f}{\omega_{\alpha}} \varGamma_{\alpha,f}$ ，$\boldsymbol{S}=\boldsymbol{F}_N^H \varGamma\boldsymbol{F}_N$ 。由于循环谱的对称性，可以注意到实际上为一个实对称矩阵，即有$\varGamma^H=\varGamma$，因此我们有 S 为一个 Hermite 矩阵（这里并不会受到$\boldsymbol{F}_N$特性的影响，事实上傅里叶变换矩阵是一个与酉矩阵有类似的性质，即有$\boldsymbol{F}_N^H\boldsymbol{F}_N=N\boldsymbol{I}$），因此目标函数事实上构成一个复二次型。因此目标函数恒为实数。</p>
+
+<p>$$</p>
+
+<p>$$
+即有：</p>
+
+\[f(x)={\boldsymbol{x}}^H  \boldsymbol{S}  {\boldsymbol{x}}\]
+
+<ol>
+  <li>
+    <p>检测概率建模</p>
+
+    <p>雷达目标检测的假设检验模型可以表征为：</p>
+
+\[\left\{
+\begin{array}{ll}
+\boldsymbol{H}_0: &amp; \boldsymbol{v} = \boldsymbol{n}\\
+\boldsymbol{H}_1: &amp; \boldsymbol{v} = \alpha_T\boldsymbol{x} + \boldsymbol{n}
+\end{array}
+\right.\]
+
+    <p>其中$\boldsymbol{v}$为接收到的回波，假设当前环境下噪声为高斯分布，且已知其协方差矩阵为正定矩阵$\boldsymbol{M}$，因此依据纽曼-皮尔逊准则可以得到检测器为：</p>
+
+\[{\left| \boldsymbol{v}^H\boldsymbol{M}^{-1}\boldsymbol{c} \right|}^2  \stackrel{H_1}{\underset{H_0}{\gtrless}} G\]
+
+    <p>其中$G$为在给定虚警概率$P_{fa}$下的检测阈值，且有检测概率为：</p>
+
+\[P_d = Q \left(
+\sqrt{2 {\left|\alpha_T\right|}^2\boldsymbol{c}^H\boldsymbol{M}^{-1}\boldsymbol{c} }
+,\sqrt{-2 \ln{P_{fa}}}
+\right)\]
+
+    <p>因此对于给定的协方差矩阵，检测概率仅仅依赖于信干噪比，即有：</p>
+
+\[\text{SINR}={\left|\alpha_T\right|}^2\boldsymbol{c}^H\boldsymbol{M}^{-1}\boldsymbol{c}\]
+
+    <p>最大化检测概率即最大化$\text{SINR}$值。</p>
+  </li>
+  <li>
+    <p>相似度约束建模</p>
+
+    <p>一些常用的雷达波形拥有较为良好的性质，假设给定的参考波形为$\boldsymbol{x}_0$，因此我们可以设置波形相似度约束有：</p>
+
+\[{\left\|
+\boldsymbol{x}-\boldsymbol{x}_0 
+\right\|}^2 \leq \varepsilon\]
+
+    <p>其中$\varepsilon$为指定的波形相似度参数，用于控制波形可设计的范围大小。</p>
+
+    <p>注意到事实上我们有：</p>
+
+\[{\left\|\boldsymbol{x}-\boldsymbol{x}_0 \right\|}^2
+=
+{\left(\boldsymbol{x}-\boldsymbol{x}_0 \right)}^H {\left(
+\boldsymbol{x}-\boldsymbol{x}_0 
+\right)}
+=
+\boldsymbol{x}^H\boldsymbol{x}+\boldsymbol{x}_0^H\boldsymbol{x}_0-\boldsymbol{x}^H\boldsymbol{x}_0-\boldsymbol{x}_0^H\boldsymbol{x}\]
+
+    <p>假设我们的目标波形与参考波形均满足恒模约束，此时我们有上式的等价表示：</p>
+
+\[\Re (\boldsymbol{x}^H\boldsymbol{x}_0) \geq 1-\frac{\varepsilon}{2}\]
+
+    <p>此外，雷达波形通常希望最大化输出功率以提升目标探测性能，因此我们需要有恒模约束有：</p>
+
+\[{\left\| \boldsymbol{x} \right\|}^2=1\]
+  </li>
+  <li>
+    <p>频谱约束建模</p>
+
+    <p>假设给定一个初始波形，给定一组阻带约束集合考虑阻带约束下频带内的能量，有：</p>
+
+\[\int_{f_1^k}^{f_2^k}{S_x(f) ~\text{d}f}=\boldsymbol{x}^H \boldsymbol{R}_{s,k}\boldsymbol{x}\]
+
+    <div class="table-wrapper"><table>
+      <tbody>
+        <tr>
+          <td>其中有$S_x(f)={\left</td>
+          <td>\sum\limits_{n=0}\limits^{N-1}{x(n)e^{-2j2\pi fn}} \right</td>
+          <td>}^2$为信号的能量谱密度。且有：</td>
+        </tr>
+      </tbody>
+    </table></div>
+
+\[\boldsymbol{R}_{s,k}=
+\left\{
+\begin{array}{ll}
+f_2^{k}-f_1^{k} &amp; m=l \\
+\frac{e^{j2\pi f_2^{k}(m-l)}-e^{j2\pi f_1^{k}(m-l)}}{j2\pi (m-l)} &amp;m\neq l
+\end{array}
+\right.
+\quad, (m,l)\in \left\{1,\ldots,N\right\}^2\]
+
+    <p>假设给定一组阻带约束集合$\left{ [f_1^1,f_2^1,\right],\ldots,[f_1^K, f_2^K]}$，因此我们有阻带内能量为：</p>
+
+\[E_s=\sum_{k=1}^{K}\boldsymbol{x}^H\boldsymbol{R}_{s,k}\boldsymbol{x}\]
+  </li>
+</ol>
+
+<p>​    此时对于多阻带约束，我们有：
+\(\boldsymbol{R}_s=\sum_{k=1}^{K}w_k\boldsymbol{R}_{s,k}\)
+​    其中$w_k$是我们对于多个阻带的权重约束。假设我们希望阻带内的最大能量为$E_s$，因此我们可以得到约束：
+\(\boldsymbol{x}^H\boldsymbol{R}_{s}\boldsymbol{x}\leq E_s\)</p>
+
+<p>下面我们定义在给定这些条件下的WCFS建模分析：
+\(\mathscr{P}_1
+\left\{
+\begin{array}{ll}
+\min\limits_{\boldsymbol{x}} &amp; {\boldsymbol{x}}^H  \boldsymbol{S}  {\boldsymbol{x}} \\
+\text{s.t.} &amp; 
+\begin{array}{l} 
+\boldsymbol{x}^H\boldsymbol{x}=1 \\ 
+\Re (\boldsymbol{x}^H\boldsymbol{x}_0) \geq 1-\frac{\varepsilon}{2} \\
+\boldsymbol{x}^H\boldsymbol{R}_{s}\boldsymbol{x}\leq E_s
+\end{array}
+\end{array}
+\right.\)</p>
+
+<h2 id="2-问题形式化简"><span class="me-2">2. 问题形式化简</span><a href="#2-问题形式化简" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2>
+
+<p>首先对于相似性约束进行松弛，其在形式上并不能够使用这种方式进行处理，考虑到${|\boldsymbol{x}^H\boldsymbol{x}_0|}^2= \boldsymbol{x}^H\boldsymbol{x}_0\boldsymbol{x}_0^H\boldsymbol{x}={\Re{(\boldsymbol{x}^H\boldsymbol{x}_0)}}^2+{\Im{(\boldsymbol{x}^H\boldsymbol{x}_0)}}^2 \geq {\Re{(\boldsymbol{x}^H\boldsymbol{x}_0)}}^2 \geq (1-\frac{\varepsilon}{2})^2$。我们考虑对其进行松弛，有：
+\(\boldsymbol{x}_0^H \boldsymbol{R}_0 \boldsymbol{x} \geq \delta\)
+其中，$\delta=(1-\frac{\varepsilon}{2})^2$，$\boldsymbol{R}_0=\boldsymbol{x}_0\boldsymbol{x}_0^H$，因此我们可以得到</p>
+
+\[\mathscr{P}_2
+\left\{
+\begin{array}{ll}
+\min\limits_{\boldsymbol{x}} &amp; {\boldsymbol{x}}^H  \boldsymbol{S}  {\boldsymbol{x}} \\
+\text{s.t.} &amp; 
+\begin{array}{l} 
+\boldsymbol{x}^H\boldsymbol{x}=1 \\ 
+\boldsymbol{x}_0^H \boldsymbol{R}_0 \boldsymbol{x} \geq \delta \\
+\boldsymbol{x}^H\boldsymbol{R}_{s}\boldsymbol{x}\leq E_s
+\end{array}
+\end{array}
+\right.\]
+
+<p>下面我们考虑问题$\mathscr{P}_2$，注意到其中的恒模约束以及目标函数较难处理。注意到目标函数事实上为一个实数，且考虑到$\text{tr}(\boldsymbol{A}\boldsymbol{B})=\text{tr}(\boldsymbol{A}\boldsymbol{B})$，其中$\text{tr}(\cdot)$为矩阵的迹函数，因此我们有
+\({\boldsymbol{x}}^H  \boldsymbol{S}  {\boldsymbol{x}}
+= \text{tr}({\boldsymbol{x}}^H  \boldsymbol{S}  {\boldsymbol{x}})
+= \text{tr}(\boldsymbol{S}  {\boldsymbol{x}} {\boldsymbol{x}}^H)
+= \text{tr}(\boldsymbol{S}  {\boldsymbol{X}})\)
+其中$\boldsymbol{X}={\boldsymbol{x}} {\boldsymbol{x}}^H$。</p>
+
+<p>利用相似的原理，我们可以将$\mathscr{P}_2$等价表示为：</p>
+
+\[\mathscr{P}_3
+\left\{
+\begin{array}{ll}
+\min\limits_{\boldsymbol{X}} &amp; \text{tr}(\boldsymbol{S}  {\boldsymbol{X}}) \\
+\text{s.t.} &amp; 
+\begin{array}{l} 
+\text{tr}({\boldsymbol{X}})=1 \\ 
+\text{tr}(\boldsymbol{R}_0 {\boldsymbol{X}}) \geq \delta \\
+\text{tr}(\boldsymbol{R}_{s}  {\boldsymbol{X}})\leq E_s
+\end{array}
+\end{array}
+\right.\]
+
+<p>针对于这一问题，我们忽略掉秩一约束求解出矩阵</p>
+
+<p>$\boldsymbol{X}$，再对于矩阵$\boldsymbol{X}$进行秩一分解可以求解出最后的信号$\boldsymbol{x}$。</p>
+
+<p>对于忽略掉秩一约束后的问题，有：</p>
+
+\[\left\{
+\begin{array}{ll}
+\min\limits_{\boldsymbol{X}} &amp; \text{tr}(\boldsymbol{S}  {\boldsymbol{X}}) \\
+\text{s.t.} &amp; 
+\begin{array}{l} 
+\text{tr}(\boldsymbol{R}_0 {\boldsymbol{X}}) \geq \delta \\
+\text{tr}(\boldsymbol{R}_{s}  {\boldsymbol{X}})\leq E_s
+\end{array}
+\end{array}
+\right.\]
+
+<p>其是一个典型的凸优化问题，我们可以使用内点法对其进行求解。引入对数障碍函数：
+\(L_b(\cdot)=-\frac{1}{t}\log(-f(\cdot))\)
+其中$t&gt;0$为控制因子，</p>
+
+<p>即有：
+\(L(\boldsymbol{X})=\text{tr}(\boldsymbol{S}  {\boldsymbol{X}})
+-\frac{1}{t}\log(\text{tr}(\boldsymbol{R}_0 {\boldsymbol{X}})-\delta)
+-\frac{1}{t}\log(E_s-\text{tr}(\boldsymbol{R}_{s}  {\boldsymbol{X}}))\)
+令其导数为0可以得到：
+\(\boldsymbol{X}=\boldsymbol{S}
+-\frac{1}{t}\frac{\boldsymbol{R}_0}{\text{tr}(\boldsymbol{R}_0 {\boldsymbol{X}})-\delta}
++\frac{1}{t}\frac{\boldsymbol{R}_s}{E_s-\text{tr}(\boldsymbol{R}_{s}  {\boldsymbol{X}})}\)
+采用迭代算法可以求解。可以注意到，我们最终所获得的矩阵肯定是一个Hermitian矩阵（其事实上为三个矩阵的加权和，而三个矩阵都是Hermitian矩阵）。</p>
+
+<p>得到$\boldsymbol{X}$矩阵后，我们采用秩一矩阵分解来求解$\boldsymbol{x}$向量，即求解该问题：</p>
+
+\[\min_{x} \quad {\left\| \boldsymbol{X}-\boldsymbol{x}\boldsymbol{x}^H \right\|}^2\]
+
+<p>对其求导我们可以解得$\boldsymbol{x}=(\boldsymbol{X}^H+\boldsymbol{X})^{-1}\frac{\boldsymbol{X}^H\boldsymbol{X}-1}{2}$</p>
+
+  </div>
+
+  <div class="post-tail-wrapper text-muted">
+    <!-- categories -->
+    
+
+    <!-- tags -->
+    
+
+    <div
+      class="
+        post-tail-bottom
+        d-flex justify-content-between align-items-center mt-5 pb-2
+      "
+    >
+      <div class="license-wrapper">
+        
+          
+
+          This post is licensed under 
+        <a href="https://creativecommons.org/licenses/by/4.0/">
+          CC BY 4.0
+        </a>
+         by the author.
+        
+      </div>
+
+      <!-- Post sharing snippet -->
+
+<div class="share-wrapper d-flex align-items-center">
+  <span class="share-label text-muted">Share</span>
+  <span class="share-icons">
+    
+    
+    
+
+    
+
+      
+
+      <a href="http://service.weibo.com/share/share.php?title=%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC2%20-%20Fish&url=http%3A%2F%2F0.0.0.0%3A4000%2Fposts%2F%25E5%2585%25AC%25E5%25BC%258F%25E6%258E%25A8%25E5%25AF%25BC2%2F" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="Weibo" aria-label="Weibo">
+        <i class="fa-fw fab fa-weibo"></i>
+      </a>
+    
+
+      
+
+      <a href="https://www.zhihu.com/" target="_blank" rel="noopener" data-bs-toggle="tooltip" data-bs-placement="top" title="zhihu" aria-label="zhihu">
+        <i class="fa-fw fa-brands fa-zhihu"></i>
+      </a>
+    
+
+    <button
+      id="copy-link"
+      aria-label="Copy link"
+      class="btn small"
+      data-bs-toggle="tooltip"
+      data-bs-placement="top"
+      title="Copy link"
+      data-title-succeed="Link copied successfully!"
+    >
+      <i class="fa-fw fas fa-link pe-none fs-6"></i>
+    </button>
+  </span>
+</div>
+
+    </div>
+    <!-- .post-tail-bottom -->
+  </div>
+  <!-- div.post-tail-wrapper -->
+</article>
+
+
+            
+          </main>
+
+          <!-- panel -->
+          <aside aria-label="Panel" id="panel-wrapper" class="col-xl-3 ps-2 mb-5 text-muted">
+            <div class="access">
+              <!-- Get 5 last posted/updated posts -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <section id="access-lastmod">
+    <h2 class="panel-heading">Recently Updated</h2>
+    <ul class="content list-unstyled ps-0 pb-1 ms-1 mt-2">
+      
+        
+        
+        
+        <li class="text-truncate lh-lg">
+          <a href="/posts/Ubuntu/">Ubuntu</a>
+        </li>
+      
+        
+        
+        
+        <li class="text-truncate lh-lg">
+          <a href="/posts/%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC2/">公式推导2</a>
+        </li>
+      
+        
+        
+        
+        <li class="text-truncate lh-lg">
+          <a href="/posts/Ubuntu-bug%E8%AE%B0%E5%BD%95/">Ubuntu BUG记录</a>
+        </li>
+      
+        
+        
+        
+        <li class="text-truncate lh-lg">
+          <a href="/posts/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB%E8%AE%B0%E5%BD%95/">论文阅读记录</a>
+        </li>
+      
+        
+        
+        
+        <li class="text-truncate lh-lg">
+          <a href="/posts/%E7%A7%91%E7%A0%94%E8%AE%B0%E5%BD%95-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB01/">LPI Radar Waveform Design With Desired Cyclic Spectrum and Pulse Compression Properties 论文阅读</a>
+        </li>
+      
+    </ul>
+  </section>
+  <!-- #access-lastmod -->
+
+
+              <!-- The trending tags list -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+
+
+  <section>
+    <h2 class="panel-heading">Trending Tags</h2>
+    <div class="d-flex flex-wrap mt-3 mb-1 me-3">
+      
+        
+        <a class="post-tag btn btn-outline-primary" href="/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">论文阅读</a>
+      
+        
+        <a class="post-tag btn btn-outline-primary" href="/tags/ubuntu/">Ubuntu</a>
+      
+        
+        <a class="post-tag btn btn-outline-primary" href="/tags/git/">Git</a>
+      
+        
+        <a class="post-tag btn btn-outline-primary" href="/tags/hpc/">HPC</a>
+      
+        
+        <a class="post-tag btn btn-outline-primary" href="/tags/jekyll/">Jekyll</a>
+      
+        
+        <a class="post-tag btn btn-outline-primary" href="/tags/matlab/">MATLAB</a>
+      
+        
+        <a class="post-tag btn btn-outline-primary" href="/tags/ssh/">ssh</a>
+      
+        
+        <a class="post-tag btn btn-outline-primary" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a>
+      
+    </div>
+  </section>
+
+
+            </div>
+
+            
+              
+              
+
+
+
+  <section id="toc-wrapper" class="d-none ps-0 pe-4">
+    <h2 class="panel-heading ps-3 mb-2">Contents</h2>
+    <nav id="toc"></nav>
+  </section>
+
+
+            
+          </aside>
+        </div>
+
+        <div class="row">
+          <!-- tail -->
+          <div id="tail-wrapper" class="col-12 col-lg-11 col-xl-9 px-md-4">
+            
+              
+              <!-- Recommend the other 3 posts according to the tags and categories of the current post. -->
+
+<!-- The total size of related posts -->
+
+
+<!-- An random integer that bigger than 0 -->
+
+
+<!-- Equals to TAG_SCORE / {max_categories_hierarchy} -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
+              
+              <!-- Navigation buttons at the bottom of the post. -->
+
+<nav class="post-navigation d-flex justify-content-between" aria-label="Post Navigation">
+  
+  
+
+  
+    <a
+      href="/posts/%E5%85%AC%E5%BC%8F%E6%8E%A8%E5%AF%BC/"
+      class="btn btn-outline-primary"
+      aria-label="Older"
+    >
+      <p>公式推导</p>
+    </a>
+  
+
+  
+    <a
+      href="/posts/Ubuntu-bug%E8%AE%B0%E5%BD%95/"
+      class="btn btn-outline-primary"
+      aria-label="Newer"
+    >
+      <p>Ubuntu BUG记录</p>
+    </a>
+  
+</nav>
+
+            
+              
+              <!-- The comments switcher -->
+
+
+            
+
+            <!-- The Footer -->
+
+<footer
+  aria-label="Site Info"
+  class="
+    d-flex flex-column justify-content-center text-muted
+    flex-lg-row justify-content-lg-between align-items-lg-center pb-lg-3
+  "
+>
+  <p>©
+    <time>2025</time>
+
+    
+      <a href="https://github.com/huang-cumt">XinyuHuang</a>.
+    
+
+    
+      <span
+        data-bs-toggle="tooltip"
+        data-bs-placement="top"
+        title="Except where otherwise noted, the blog posts on this site are licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0) License by the author."
+      >Some rights reserved.</span>
+    
+  </p>
+
+  <p>Using the <a
+        data-bs-toggle="tooltip"
+        data-bs-placement="top"
+        title="v7.0.1"
+        href="https://github.com/cotes2020/jekyll-theme-chirpy"
+        target="_blank"
+        rel="noopener"
+      >Chirpy</a> theme for <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a>.
+  </p>
+</footer>
+
+          </div>
+        </div>
+
+        <!-- The Search results -->
+
+<div id="search-result-wrapper" class="d-flex justify-content-center d-none">
+  <div class="col-11 content">
+    <div id="search-hints">
+      <!-- The trending tags list -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+      
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+  
+    
+    
+    
+    
+      
+        
+        
+
+
+
+  <section>
+    <h2 class="panel-heading">Trending Tags</h2>
+    <div class="d-flex flex-wrap mt-3 mb-1 me-3">
+      
+        
+        <a class="post-tag btn btn-outline-primary" href="/tags/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">论文阅读</a>
+      
+        
+        <a class="post-tag btn btn-outline-primary" href="/tags/ubuntu/">Ubuntu</a>
+      
+        
+        <a class="post-tag btn btn-outline-primary" href="/tags/git/">Git</a>
+      
+        
+        <a class="post-tag btn btn-outline-primary" href="/tags/hpc/">HPC</a>
+      
+        
+        <a class="post-tag btn btn-outline-primary" href="/tags/jekyll/">Jekyll</a>
+      
+        
+        <a class="post-tag btn btn-outline-primary" href="/tags/matlab/">MATLAB</a>
+      
+        
+        <a class="post-tag btn btn-outline-primary" href="/tags/ssh/">ssh</a>
+      
+        
+        <a class="post-tag btn btn-outline-primary" href="/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">读书笔记</a>
+      
+    </div>
+  </section>
+
+
+    </div>
+    <div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div>
+  </div>
+</div>
+
+      </div>
+
+      <aside aria-label="Scroll to Top">
+        <button id="back-to-top" type="button" class="btn btn-lg btn-box-shadow">
+          <i class="fas fa-angle-up"></i>
+        </button>
+      </aside>
+    </div>
+
+    <div id="mask"></div>
+
+    
+      <aside
+  id="notification"
+  class="toast"
+  role="alert"
+  aria-live="assertive"
+  aria-atomic="true"
+  data-bs-animation="true"
+  data-bs-autohide="false"
+>
+  <div class="toast-header">
+    <button
+      type="button"
+      class="btn-close ms-auto"
+      data-bs-dismiss="toast"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="toast-body text-center pt-0">
+    <p class="px-2 mb-3">A new version of content is available.</p>
+    <button type="button" class="btn btn-primary" aria-label="Update">
+      Update
+    </button>
+  </div>
+</aside>
+
+    
+
+    <!-- JavaScripts -->
+
+    <!-- JS selector for site. -->
+
+<!-- commons -->
+
+
+
+<!-- layout specified -->
+
+
+
+
+  
+
+  
+    <!-- image lazy-loading & popup & clipboard -->
+    
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+
+    
+
+  
+
+  
+    
+
+    
+
+  
+
+  
+    
+
+    
+
+  
+
+  
+    
+
+    
+
+  
+
+  
+    
+
+    
+
+  
+
+  
+    
+
+    
+
+  
+
+  
+    
+
+    
+
+  
+
+  
+    
+
+    
+
+  
+
+  
+    
+
+    
+
+  
+
+
+
+  <script src="https://cdn.jsdelivr.net/combine/npm/simple-jekyll-search@1.10.0/dest/simple-jekyll-search.min.js,npm/loading-attribute-polyfill@2.1.1/dist/loading-attribute-polyfill.umd.min.js,npm/glightbox@3.3.0/dist/js/glightbox.min.js,npm/clipboard@2.0.11/dist/clipboard.min.js,npm/dayjs@1.11.11/dayjs.min.js,npm/dayjs@1.11.11/locale/en.min.js,npm/dayjs@1.11.11/plugin/relativeTime.min.js,npm/dayjs@1.11.11/plugin/localizedFormat.min.js,npm/tocbot@4.27.20/dist/tocbot.min.js"></script>
+
+
+
+
+
+
+<script src="/assets/js/dist/post.min.js"></script>
+
+
+  <!-- MathJax -->
+  <script src="/assets/js/data/mathjax.js"></script>
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+
+
+
+
+
+    
+
+    <!--
+  Jekyll Simple Search loader
+  See: <https://github.com/christian-fei/Simple-Jekyll-Search>
+-->
+
+
+
+
+
+<script>SimpleJekyllSearch({
+    searchInput: document.getElementById('search-input'),
+    resultsContainer: document.getElementById('search-results'),
+    json: '/assets/js/data/search.json',
+    searchResultTemplate: '  <article class="px-1 px-sm-2 px-lg-4 px-xl-0">    <header>      <h2><a href="{url}">{title}</a></h2>      <div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1">        {categories}        {tags}      </div>    </header>    <p>{snippet}</p>  </article>',
+    noResultsText: '<p class="mt-5"></p>',
+    templateMiddleware: function(prop, value, template) {
+      if (prop === 'categories') {
+        if (value === '') {
+          return `${value}`;
+        } else {
+          return `<div class="me-sm-4"><i class="far fa-folder fa-fw"></i>${value}</div>`;
+        }
+      }
+
+      if (prop === 'tags') {
+        if (value === '') {
+          return `${value}`;
+        } else {
+          return `<div><i class="fa fa-tag fa-fw"></i>${value}</div>`;
+        }
+      }
+    }
+  });
+</script>
+
+  </body>
+</html>
+
